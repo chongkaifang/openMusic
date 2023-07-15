@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单详情</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/audio.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .nav-item:hover {
+            background-color: #8bc99f;
+        }
+
+        .nav-active {
+            background-color: #8bc99f;
+        }
+
+        .v-hd2 {
+            height: 40px;
+            padding: 0 10px 0 10px;
+            font-size: 16px;
+        }
+
+        .el-input {
+            margin-left: 10px;
+        }
+
+        .el-input__inner, .el-input__icon {
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+    <el-row>
+        <div style="background-color: #7eab7b; width: 100%; height: 60px;">
+            <el-col :span="6">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
+                    <div style="padding: 0 20px; cursor: pointer">
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; display: flex; justify-content : flex-start;">
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/index.html">首页</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/song.html">热门歌曲</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
+                    </div>
+                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                        <a style="color: white" href="/page/end/index.html">个人中心</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div style="line-height: 60px; text-align: right">
+                    <div style="margin-right: 20px">
+                        <el-dropdown v-if="user && user.id">
+                            <img :src=`/files/${user.avatar}`
+                                 style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
+                            <el-dropdown-menu slot="dropdown">
+                                <a href="/page/end/person.html"
+                                   style="display:inline-block; padding: 5px 0; width: 100px; text-align: center; color: black">个人信息</a>
+                                <a @click="logout" href="#"
+                                   style="display:block; width: 100px;  text-align: center; color: black">退出</a>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <a v-else href="/page/end/login.html" style="margin-right: 30px; font-size: 15px; color: white">登录</a>
+                    </div>
+
+                </div>
+
+            </el-col>
+        </div>
+    </el-row>
+
+    <el-row>
+        <el-col :span="12" :offset="6">
+            <div style="background-color: white;width: 100%; min-height: calc(100vh - 70px)">
+                <div style="padding: 10px">
+                    <div style="margin-top: 20px">
+                        <div style="width: 30%; border-right: 1px solid #ccc; text-align: center; display: inline-block">
+                            <img style="width: 200px" :src=`/files/${detail.img}` alt="">
+                        </div>
+                        <div style="width: 65%; padding: 0 20px; display: inline-block; vertical-align: top ">
+                            <div style="font-size: 22px; padding-bottom: 20px">{{detail.name}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建人：{{detail.username}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建时间： {{detail.createTime}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">标签：{{detail.tag}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">访问量：{{detail.playNum}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 10px">
+                    <div class="v-hd2" style="display: inline-block">
+                        本歌单列表
+                    </div>
+                    <div v-if="user && detail.userId === user.id" style="display: inline-block; float: right">
+                        <el-button
+                                round
+                                size="small"
+                                type="success"
+                                @click="delSongsFromList()"
+                        >
+                            移除歌曲
+                        </el-button>
+                    </div>
+                    <div style="border-bottom: 2px solid #ccc; margin-top: 5px"></div>
+                    <el-table
+                            :data="tableData"
+                            size="small"
+                            style="width: 100%"
+                            @selection-change="handleSelectionChange"
+                    >
+                        <el-table-column v-if="user && detail.userId === user.id"
+                                type="selection"
+                                align="center"
+                                width="50">
+                        </el-table-column>
+                        <el-table-column
+                                label="播放"
+                                width="50"
+                                label=""
+                        >
+                            <template slot-scope="scope">
+                                <i class="el-icon-video-play" style="cursor: pointer; font-size: 20px"
+                                   @click="play(scope.row)"></i>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                label="歌曲名称"
+                                align="center"
+                                width="170"
+                        >
+                            <template slot-scope="scope">
+                                <a :href=`/page/front/songDetail.html?id=${scope.row.id}`>{{scope.row.name}}</a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="singer"
+                                label="歌手"
+                                align="center"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="lyricist"
+                                label="作词"
+                                align="center"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="composer"
+                                label="作曲"
+                                align="center"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="hot"
+                                label="热度🔥"
+                                align="center"
+                        >
+                        </el-table-column>
+                        <el-table-column
+                                prop="album"
+                                label="所属专辑"
+                                align="center"
+                                width="150"
+                        >
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
+        </el-col>
+    </el-row>
+
+    <div class="audio-box">
+        <div class="audio-container">
+            <div class="audio-cover"></div>
+            <div class="audio-view">
+                <h3 class="audio-title">暂无歌曲</h3>
+                <div class="audio-body">
+                    <div class="audio-backs">
+                        <div class="audio-this-time">00:00</div>
+                        <div class="audio-count-time">00:00</div>
+                        <div class="audio-setbacks">
+                            <i class="audio-this-setbacks">
+                                <span class="audio-backs-btn"></span>
+                            </i>
+                            <span class="audio-cache-setbacks">
+							</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="audio-btn">
+                    <div class="audio-select">
+                        <div class="audio-prev"></div>
+                        <div class="audio-play" onclick="rotate()"></div>
+                        <div class="audio-next"></div>
+                        <div class="audio-menu"></div>
+                        <div class="audio-volume"></div>
+                    </div>
+                    <div class="audio-set-volume">
+                        <div class="volume-box">
+                            <i><span></span></i>
+                        </div>
+                    </div>
+                    <div class="audio-list">
+                        <div class="audio-list-head">
+                            <p>☺随心听</p>
+                            <span class="menu-close">关闭</span>
+                        </div>
+                        <ul class="audio-inline">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+<script src="../../js/audio.js"></script>
+<script>
+    let audioFn;
+    new Vue({
+        el: "#wrapper",
+        data: {
+            user: {},
+            detail: [],
+            tableData: [],
+            // 选中待移除歌单的歌曲信息
+            multipleSelection: []
+        },
+        created() {
+            this.getUser();
+            this.loadTable();
+        },
+        methods: {
+            getUser() {
+                $.get("/user/session").then(res => {
+                    if (res.code === '0') {
+                        this.user = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            loadTable() {
+                let listId = location.search.split("=")[1];
+                $.get("/songList/" + listId).then(res => {
+                    if (res.code === '0') {
+                        this.detail = res.data;
+
+                        $.get("/songListRel/list/" + listId).then(res => {
+                            if (res.code === '0') {
+                                let songs = [];
+                                this.tableData = res.data;
+                                for (const item of this.tableData) {
+                                    songs.push({src: "/files/" + item.url, title: item.name});
+                                }
+
+                                this.$nextTick(() => {
+                                    audioFn = audioPlay({
+                                        song: songs,
+                                        autoPlay: true  //是否立即播放第一首，autoPlay为true且song为空，会alert文本提示并退出
+                                    });
+                                })
+                            }
+                        });
+
+                    }
+                })
+
+            },
+            // 记录选中的待移除歌单的单曲
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            delSongsFromList() {
+                // 判断有没有选择歌曲
+                if (this.multipleSelection.length === 0) {
+                    this.$message({
+                        type: "warning",
+                        message: '请选择要移除的歌曲',
+                    });
+                    return;
+                }
+                let _this = this;
+                this.$confirm('确认移除歌单？', '系统提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    cancelButtonClass: 'btn-custom-cancel',
+                    type: 'warning'
+                }).then(function(){
+                    let form = {};
+                    form.listId = _this.detail.id;
+                    form.songList = _this.multipleSelection;
+                    $.ajax({
+                        url: '/songListRel',
+                        data: JSON.stringify(form),
+                        contentType: "application/json",
+                        type: "delete"
+                    }).then(res => {
+                        if (res.code === '0') {
+                            _this.$message({
+                                message: "移除成功",
+                                type: "success"
+                            });
+                            _this.loadTable();
+                        } else {
+                            _this.$message({
+                                message: res.msg,
+                                type: "error"
+                            })
+                        }
+                    })
+                }).catch(function() {
+                    console.log("取消成功！");
+                });
+            },
+            logout() {
+                $.get("/user/logout");
+                this.user = {};
+            },
+            play(item) {
+                audioFn.newSong({src: "/files/" + item.url, title: item.name}, true)
+            }
+        }
+    })
+</script>
+</body>
+</html>

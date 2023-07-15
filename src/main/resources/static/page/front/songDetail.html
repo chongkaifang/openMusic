@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌曲详情</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/audio.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        .nav-item:hover {
+            background-color: #8bc99f;
+        }
+
+        .nav-active {
+            background-color: #8bc99f;
+        }
+
+        .v-hd2 {
+            height: 20px;
+            padding: 0 10px 0 10px;
+            font-size: 16px;
+        }
+
+        .el-input {
+            margin-left: 10px;
+        }
+
+        .el-input__inner, .el-input__icon {
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+    <el-row>
+        <div style="background-color: #7eab7b; width: 100%; height: 60px;">
+            <el-col :span="6">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
+                    <div style="padding: 0 20px; cursor: pointer">
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; display: flex; justify-content : flex-start;">
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/index.html">首页</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/song.html">热门歌曲</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
+                    </div>
+                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                        <a style="color: white" href="/page/end/index.html">个人中心</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div style="line-height: 60px; text-align: right">
+                    <div style="margin-right: 20px">
+                        <el-dropdown v-if="user && user.id">
+                            <img :src=`/files/${user.avatar}`
+                                 style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
+                            <el-dropdown-menu slot="dropdown">
+                                <a href="/page/end/person.html"
+                                   style="display:inline-block; padding: 5px 0; width: 100px; text-align: center; color: black">个人信息</a>
+                                <a @click="logout" href="#"
+                                   style="display:block; width: 100px;  text-align: center; color: black">退出</a>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <a v-else href="/page/end/login.html" style="margin-right: 30px; font-size: 15px; color: white">登录</a>
+                    </div>
+
+                </div>
+
+            </el-col>
+        </div>
+    </el-row>
+
+    <el-row>
+        <el-col :span="12" :offset="6">
+            <div style="background-color: white;width: 100%; min-height: calc(100vh - 70px)">
+                <div style="padding: 10px">
+                    <div style="margin-top: 20px">
+                        <div style="width: 30%; text-align: center; display: inline-block">
+                            <img style="width: 200px" src="/images/播放器.png" alt="">
+                        </div>
+                        <div style="width: 65%; padding: 0 50px; display: inline-block; vertical-align: top ">
+                            <div style="font-size: 24px; padding-bottom: 20px">{{detail.name}}</div>
+                            <div style="padding: 10px 0">作词：{{detail.lyricist}}</div>
+                            <div style="padding: 10px 0">作曲：{{detail.composer}}</div>
+                            <div style="padding: 10px 0">歌手：{{detail.singer}}</div>
+                            <div style="padding: 10px 0">
+                                <audio :src=`/files/${detail.url}` controls></audio>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 10px; margin-bottom: 50px">
+                    <div class="v-hd2">
+                        评论
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc">
+                        <el-input type="textarea" v-model="content"></el-input>
+                        <div style="text-align: right; padding: 10px 0"><el-button size="small" type="primary" @click="comment">评论</el-button></div>
+                    </div>
+
+                    <div style="padding: 10px; margin-top: 20px; border-bottom: 1px solid #ccc" v-for="item in comments" :key="item.id">
+                        <el-row>
+                            <el-col :span="3">
+                                <div>
+                                    <img style="width: 50px; height: 50px; border-radius: 50%"
+                                         :src=`/files/${item.avatar}`>
+                                </div>
+                            </el-col>
+                            <el-col :span="21">
+                                <div><span style="color: #888">{{item.username}}：</span>{{item.content}}</div>
+                                <div style="margin-top: 15px; ">
+                                    <el-row>
+                                        <el-col :span="4">
+                                            <div style="color: #888; font-size: 12px">{{ item.time }}</div>
+                                        </el-col>
+                                        <el-col :span="20">
+                                            <div style="text-align: right; font-size: 12px">
+                                                <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(item)">({{item.praise}})
+                                                <a href="#" style="margin-left: 5px" @click="replay(item.id)">回复</a>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+
+                                <!-- 回复消息 -->
+                                <div style="margin-top: 20px" v-for="sub in item.subComment" :key="sub.id">
+                                    <el-row>
+                                        <el-col :span="2">
+                                            <div>
+                                                <img style="width: 50px; height: 50px; border-radius: 50%"
+                                                     :src=`/files/${sub.avatar}`>
+                                            </div>
+                                        </el-col>
+                                        <el-col :span="22">
+                                            <div><span style="color: #888">{{sub.username}} 回复：</span>{{sub.content}}</div>
+                                            <div style="margin-top: 15px">
+                                                <el-row>
+                                                    <el-col :span="4">
+                                                        <div style="color: #888; font-size: 12px">{{sub.time}}</div>
+                                                    </el-col>
+                                                    <el-col :span="20">
+                                                        <div style="text-align: right; font-size: 12px">
+                                                            <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(sub)">({{sub.praise}})
+                                                        </div>
+                                                    </el-col>
+                                                </el-row>
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+            </div>
+        </el-col>
+    </el-row>
+
+
+    <el-dialog title="回复" :visible.sync="dialogFormVisible" width="30%" top="30vh"
+               close-on-click-modal="false" close-on-press-escape="false" show-close="false">
+        <el-form :model="entity">
+            <el-form-item label="内容" label-width="100px">
+                <el-input v-model="entity.content" autocomplete="off" style="width: 80%"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+<script src="../../js/audio.js"></script>
+<script>
+    new Vue({
+        el: "#wrapper",
+        data: {
+            user: {},
+            detail: [],
+            comments: [],
+            dialogFormVisible: false,
+            entity: {},
+            content: ''
+        },
+        created() {
+            this.getUser();
+            this.loadTable();
+        },
+        methods: {
+            getUser() {
+                $.get("/user/session").then(res => {
+                    if (res.code === '0') {
+                        this.user = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            praise(item) {
+                item.praise = item.praise ? item.praise + 1 : 1;
+                $.ajax({
+                    url: '/comment',
+                    contentType: "application/json",
+                    type: 'POST',
+                    data: JSON.stringify(item)
+                }).then(res => {
+                    if(res.code === "0") {
+                        this.$message({
+                            type: "success",
+                            message: "点赞成功",
+                            duration: 500
+                        });
+                        this.loadTable();
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            loadTable() {
+                let songId = location.search.split("=")[1];
+                $.get("/song/updateHot/" + songId);
+                $.get("/song/" + songId).then(res => {
+                    if (res.code === '0') {
+                        this.detail = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                });
+
+                $.get("/comment/song/" + songId).then(res => {
+                    if (res.code === '0') {
+                        this.comments = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+
+            },
+            logout() {
+                $.get("/user/logout");
+                this.user = {};
+            },
+            comment() {
+                let songId = location.search.split("=")[1];
+                this.entity = {
+                    pId: null,
+                    username: this.user.username,
+                    avatar:  this.user.avatar,
+                    praise: 0,
+                    songId: songId,
+                    content: this.content
+                };
+                this.save()
+            },
+            replay(id) {
+                let songId = location.search.split("=")[1];
+                this.entity = {
+                    pId: id,
+                    username: this.user.username,
+                    avatar:  this.user.avatar,
+                    praise: 0,
+                    songId: songId
+                };
+                this.dialogFormVisible = true;
+            },
+            save() {
+                $.ajax({
+                    url: '/comment',
+                    contentType: "application/json",
+                    type: 'POST',
+                    data: JSON.stringify(this.entity)
+                }).then(res => {
+                    if(res.code === "0") {
+                        this.$message({
+                            type: "success",
+                            message: "评论成功",
+                            duration: 1000
+                        });
+                        this.entity = {};
+                        this.dialogFormVisible = false;
+                        this.content = ''
+                        this.loadTable();
+                    }
+
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

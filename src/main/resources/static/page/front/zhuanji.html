@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>热门专辑</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/audio.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .nav-item:hover {
+            background-color: #8bc99f;
+        }
+
+        .nav-active {
+            background-color: #8bc99f;
+        }
+
+        .v-hd2 {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 10px 0 10px;
+            font-size: 16px;
+        }
+
+        .el-input {
+            margin-left: 10px;
+        }
+
+        .el-input__inner, .el-input__icon {
+            height: 30px;
+            line-height: 30px;
+        }
+        .el-menu-item {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+        .el-menu-item {
+            height: 45px;
+            line-height: 45px;
+        }
+        .el-menu-item.is-active {
+            background-color: #bfeeff !important;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+    <el-row>
+        <div style="background-color: #7eab7b; width: 100%; height: 60px;">
+            <el-col :span="6">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
+                    <div style="padding: 0 20px; cursor: pointer">
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; display: flex; justify-content : flex-start;">
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/index.html">首页</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item nav-active">
+                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/song.html">热门歌曲</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
+                    </div>
+                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                        <a style="color: white" href="/page/end/index.html">个人中心</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div style="line-height: 60px; text-align: right">
+                    <div style="margin-right: 20px">
+                        <el-dropdown v-if="user && user.id">
+                            <img :src=`/files/${user.avatar}`
+                                 style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
+                            <el-dropdown-menu slot="dropdown">
+                                <a href="/page/end/person.html"
+                                   style="display:inline-block; padding: 5px 0; width: 100px; text-align: center; color: black">个人信息</a>
+                                <a @click="logout" href="#"
+                                   style="display:block; width: 100px;  text-align: center; color: black">退出</a>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <a v-else href="/page/end/login.html" style="margin-right: 30px; font-size: 15px; color: white">登录</a>
+                    </div>
+
+                </div>
+
+            </el-col>
+        </div>
+    </el-row>
+
+    <el-row type="flex" justify="center" style="margin-top: 20px">
+        <el-col :span="3">
+            <el-menu
+                    :default-active="index"
+                    text-color="#555"
+                    active-text-color="#169af3">
+                <el-menu-item
+                        :index="item.id"
+                        :key="item.id"
+                        v-for="(item,index) in zhuanjis"
+                        @click="loadSongData(item.id)"
+                >
+                    <img :src=`/files/${item.img}` style="width: 18px; height: 18px">
+                    <span style="margin-left: 10px; font-size: 14px;">{{item.name}}</span>
+                </el-menu-item>
+            </el-menu>
+        </el-col>
+        <el-col :span="12" offset="1">
+            <div class="v-hd2" style="display: inline-block">
+                专辑内单曲
+            </div>
+            <div style="display: inline-block; float: right">
+                <el-button
+                        type="success"
+                        round size="small"
+                        @click="toggleSelection()"
+                >加入歌单
+                </el-button>
+            </div>
+            <div style="border-bottom: 2px solid #ccc; margin-top: 5px"></div>
+            <el-table
+                    :data="songData"
+                    style="width: 100%"
+                    size="small"
+                    @selection-change="handleSelectionChange"
+            >
+                <el-table-column
+                        type="selection"
+                        align="center"
+                        width="50">
+                </el-table-column>
+                <el-table-column
+                        label="歌曲名称"
+                        align="center"
+                >
+                    <template slot-scope="scope">
+                        <a :href=`/page/front/songDetail.html?id=${scope.row.id}`>{{scope.row.name}}</a>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="singer"
+                        label="作曲人"
+                        align="center"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="lyricist"
+                        label="作词人"
+                        align="center"
+                >
+                </el-table-column>
+                </el-table-column>
+                <el-table-column
+                        prop="hot"
+                        label="热度🔥"
+                        align="center"
+                >
+                </el-table-column>
+
+            </el-table>
+        </el-col>
+    </el-row>
+    <el-dialog title="选择你要加入的歌单" :visible.sync="dialogFormVisible" width="30%">
+        <el-form :model="form">
+            <el-form-item label="歌单选择" label-width="120px">
+                <el-select v-model="form.listId" placeholder="请选择你的歌单">
+                    <el-option v-for="item in list" :label="item.name" :value="item.id"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="addSongList">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+<script src="../../js/audio.js"></script>
+<script>
+    new Vue({
+        el: "#wrapper",
+        data: {
+            user: {},
+            dialogFormVisible: false,
+            form: {},
+            // 当前用户歌单
+            list: [],
+            // 选中菜单，即专辑id
+            index: 0,
+            // 专辑内的歌曲
+            songData: [],
+            // 专辑列表
+            zhuanjis: [],
+            // 选中待加入歌单的歌曲
+            multipleSelection: []
+        },
+        created() {
+            this.getUser();
+            this.index = getUrlParamValue('id');
+            this.loadZhuanjiData();
+        },
+        methods: {
+            getUser() {
+                $.get("/user/session").then(res => {
+                    if (res.code === '0') {
+                        this.user = res.data;
+                        // 加载当前用户歌单信息
+                        $.get("/songList/user/" + this.user.id).then(res => {
+                            if (res.code === '0') {
+                                this.list = res.data;
+                            } else {
+                                this.$message({
+                                    type: "warning",
+                                    message: res.msg,
+                                });
+                            }
+                        })
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            loadZhuanjiData() {
+                $.get("/zhuanji").then(res => {
+                    if (res.code === '0') {
+                        this.zhuanjis = res.data;
+                        this.index = this.index === 0 ? this.zhuanjis[0].id : this.index;
+                        // 加载右侧歌曲信息
+                        this.loadSongData(this.index);
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            loadSongData(id) {
+                $.get("/song/album/" + id).then(res => {
+                    if (res.code === '0') {
+                        this.songData = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                });
+                $.get("/zhuanji/updateHot/" + id);
+            },
+            // 记录选中的待加入歌单的单曲
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            // 弹出加入歌单窗口
+            toggleSelection(rows) {
+                // 先判断登录状态，未登录提示登录
+                if (!this.user) {
+                    this.$message({
+                        type: "warning",
+                        message: '请先登录',
+                    });
+                    return;
+                }
+                // 判断有没有选择歌曲
+                if (this.multipleSelection.length === 0) {
+                    this.$message({
+                        type: "warning",
+                        message: '请选择要加入的歌曲',
+                    });
+                    return;
+                }
+                // 弹出窗口让用户选择自己的歌单
+                this.dialogFormVisible = true;
+            },
+            // 加入歌单
+            addSongList() {
+                this.dialogFormVisible = false;
+                this.form.songList = this.multipleSelection;
+                $.ajax({
+                    url: '/songListRel',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify(this.form)
+                }).then(res => {
+                    if (res.code === '0') {
+                        this.$message({
+                            message: "添加成功",
+                            type: "success"
+                        });
+                        this.loadTable();
+                    } else {
+                        this.$message({
+                            message: res.msg,
+                            type: "error"
+                        })
+                    }
+                })
+            },
+            logout() {
+                $.get("/user/logout");
+                this.user = {};
+            },
+        }
+    });
+
+    /**
+     * 获取url参数
+     * @param name
+     * @returns {string|null}
+     */
+    function getUrlParamValue(name) {
+        if (name == null || name === 'undefined') {
+            return 0;
+        }
+        let searchStr = decodeURI(location.search);
+        let infoIndex = searchStr.indexOf(name + "=");
+        if (infoIndex === -1) {
+            return 0;
+        }
+        let searchInfo = searchStr.substring(infoIndex + name.length + 1);
+        let tagIndex = searchInfo.indexOf("&");
+        if (tagIndex !== -1) {
+            searchInfo = searchInfo.substring(0, tagIndex);
+        }
+        return searchInfo;
+    }
+</script>
+</body>
+</html>

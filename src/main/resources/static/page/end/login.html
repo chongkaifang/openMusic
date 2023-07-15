@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/theme2.css">
+    <link rel="stylesheet" href="../../css/element.css">
+</head>
+<body style="background:url('../../images/bg.jpg') no-repeat; background-size: cover;">
+    <div id="wrapper">
+        <div style="width: 500px; margin: 150px auto;">
+            <div style="width: 100%; height: 100px; color: #3031c2; font-size: 30px;line-height: 100px; text-align: center">欢迎登录时代音乐小站</div>
+            <div style="margin-top: 25px; width: 100%; height: 270px; text-align: center">
+                <input v-model="user.username" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%" placeholder="请输入账号">
+                <input v-model="user.password" type="password" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%; margin-top: 25px" placeholder="请输入密码">
+                <button @click="login" style="height: 40px; padding: 10px; width: 60%; margin-top: 25px; background-color: steelblue; color: white">登陆</button>
+                <a style="width: 60%; text-align: right; display: inline-block; margin-top: 25px; color: steelblue" href="register.html">还没账号？去注册</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/element.js"></script>
+
+    <script>
+        new Vue({
+            el: "#wrapper",
+            data: {
+                user: {}
+            },
+            methods: {
+                login() {
+                    if (!this.user.username) {
+                        this.$message({
+                            message: "请输入用户名",
+                            type: "error"
+                        })
+                        return;
+                    }
+                    if (!this.user.password) {
+                        this.$message({
+                            message: "请输入密码",
+                            type: "error"
+                        })
+                        return;
+                    }
+                    $.ajax({
+                        url: "/user/login",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(this.user)
+                    }).then(res => {
+                        if (res.code === '0') {
+                            this.$message({
+                                message: "登陆成功",
+                                type: "success"
+                            });
+                            localStorage.setItem("user", JSON.stringify(res.data));
+                            setTimeout(() => {
+                                location.href= "/page/front/index.html"
+                            }, 1000)
+                        } else {
+                            this.$message({
+                                message: res.msg,
+                                type: "error"
+                            })
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

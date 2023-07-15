@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歌单</title>
+    <link rel="stylesheet" href="../../css/element.css">
+    <link rel="stylesheet" href="../../css/audio.css">
+    <link rel="stylesheet" href="../../css/base.css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+        .nav-item:hover {
+            background-color: #8bc99f;
+        }
+
+        .nav-active {
+            background-color: #8bc99f;
+        }
+
+        .v-hd2 {
+            height: 40px;
+            padding: 0 10px 0 10px;
+            font-size: 16px;
+            border-bottom: 2px solid #cccccc;
+        }
+
+        .el-input {
+            margin-left: 10px;
+        }
+
+        .el-input__inner, .el-input__icon {
+            height: 30px;
+            line-height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper" v-cloak>
+    <el-row>
+        <div style="background-color: #7eab7b; width: 100%; height: 60px;">
+            <el-col :span="6">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
+                    <div style="padding: 0 20px; cursor: pointer">
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="12">
+                <!-- 导航 -->
+                <div style="height: 60px; line-height: 60px; color: white; display: flex; justify-content : flex-start;">
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/index.html">首页</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
+                        <a style="color: white" href="/page/front/song.html">热门歌曲</a>
+                    </div>
+                    <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item nav-active">
+                        <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
+                    </div>
+                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                        <a style="color: white" href="/page/end/index.html">个人中心</a>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div style="line-height: 60px; text-align: right">
+                    <div style="margin-right: 20px">
+                        <el-dropdown v-if="user && user.id">
+                            <img :src=`/files/${user.avatar}`
+                                 style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
+                            <el-dropdown-menu slot="dropdown">
+                                <a href="/page/end/person.html"
+                                   style="display:inline-block; padding: 5px 0; width: 100px; text-align: center; color: black">个人信息</a>
+                                <a @click="logout" href="#"
+                                   style="display:block; width: 100px;  text-align: center; color: black">退出</a>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                        <a v-else href="/page/end/login.html" style="margin-right: 30px; font-size: 15px; color: white">登录</a>
+                    </div>
+
+                </div>
+
+            </el-col>
+        </div>
+    </el-row>
+
+    <el-row>
+        <el-col :span="12" :offset="6">
+            <div style="margin-top: 20px">
+                <div class="v-hd2" style="display: inline-block;">
+                    Song Lists
+                </div>
+                <div style="display: inline-block; float: right">
+                    <el-button v-if="isMine === false"
+                            round
+                            size="small"
+                            type="success"
+                            @click="changeMyList()"
+                    >
+                        我的歌单
+                    </el-button>
+                    <el-button v-else
+                               round
+                               size="small"
+                               type="primary"
+                               @click="loadTable()"
+                    >
+                        所有歌单
+                    </el-button>
+                </div>
+            </div>
+        </el-col>
+    </el-row>
+    <el-row type="flex" justify="center">
+        <el-col :span="14">
+            <el-card v-for="(item,index) in tableData" style="width: 22%; display: inline-block; margin: 20px 12px">
+                <a :href=`/page/front/songlistDetail.html?id=${item.id}`>
+                    <div style="text-align: center">
+                        <img :src=`/files/${item.img}` alt="" style="width: 100%; border-radius: 5px">
+                    </div>
+                    <div style="text-align: center; padding: 5px 0; color: #666">
+                        {{item.name}}
+                    </div>
+                    <div style="text-align: center; font-size: 12px; color: #999">
+                        By {{item.username}}
+                    </div>
+                </a>
+            </el-card>
+        </el-col>
+    </el-row>
+
+
+</div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/element.js"></script>
+<script src="../../js/audio.js"></script>
+<script>
+
+    function subStr(str,length){
+        let a = str.match(/[^\x00\xff]|\w{1,2}/g);
+        return a.length <= length ? str : a.slice(0,length).join("")+"...";
+    }
+
+    new Vue({
+        el: "#wrapper",
+        data: {
+            user: {},
+            isMine: false,
+            tableData: [],
+        },
+        created() {
+            this.getUser();
+            this.loadTable();
+        },
+        methods: {
+            getUser() {
+                $.get("/user/session").then(res => {
+                    if (res.code === '0') {
+                        this.user = res.data;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+            },
+            loadTable() {
+                // if (!this.user || !this.user.id) {
+                //     location.href = "/page/login.html";
+                //     return;
+                // }
+                this.isMine = false;
+                $.get("/songList").then(res => {
+                    if (res.code === '0') {
+                        let list = [];
+                        // 截取字符串
+                        res.data.forEach(item => {
+                            item.name = subStr(item.name, 9);
+                            list.push(item);
+                        });
+                        this.tableData = list;
+                    } else {
+                        this.$message({
+                            type: "warning",
+                            message: res.msg,
+                        });
+                    }
+                })
+
+            },
+            changeMyList() {
+                if (!this.user || !this.user.id) {
+                    this.$message({
+                        type: "warning",
+                        message: '请先登录',
+                    });
+                    return;
+                }
+                this.isMine = true;
+                this.tableData = this.tableData.filter(res => {
+                    return res.userId === this.user.id;
+                });
+            },
+            logout() {
+                $.get("/user/logout");
+                this.user = {};
+            },
+        }
+    })
+</script>
+</body>
+</html>

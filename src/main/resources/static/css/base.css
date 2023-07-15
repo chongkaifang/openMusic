@@ -1,0 +1,104 @@
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+ul,li{
+    list-style: none;
+}
+a {
+    text-decoration: none;
+    color: cornflowerblue;
+}
+body {
+    font-size:14px;
+    color:#333;
+    background-color: white;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+input, textarea, audio{
+    outline: none;
+    border: none;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.upload-box {
+    position: relative;
+    width: 50px;
+    height: 30px;
+    line-height: 30px;
+    background-color: #3a8ee6;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+input[type='file'] {
+    width: 50px;
+    height: 30px;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+elementUI样式调整
+[v-cloak] {
+    display: none;
+}
+.el-header {
+    padding-left: 0;
+}
+.el-aside,.el-menu {
+    overflow-x: hidden;
+}
+.horizontal-collapse-transition {
+    transition: 0s;
+}
+.el-menu a {
+    color: white;
+}
+.is-active > a {
+    color: #ffd04b;
+}
+
+.main-font {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.zhuanji-tem-font {
+    color: #7eab7b;
+    font-size: 14px;
+}
+.zhuanji-tem-font span {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.more {
+    font-size: 14px;
+    font-weight: 400;
+    color: #858585;
+}
+
+.font-item {
+    font-weight: 400;
+    font-size: 14px;
+    color: #000000;
+}

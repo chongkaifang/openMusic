@@ -1,0 +1,49 @@
+.el-aside,
+.el-menu,
+.el-menu-item {
+  background-color: #f0f0f0 !important;
+  color: rgb(110, 130, 155) !important;
+}
+
+.el-menu {
+
+  height: calc(100% - 90px);
+  overflow-y: auto;
+  border-right: 1px solid #DCDFE6 !important;
+}
+
+.el-menu:not(.el-menu--collapse) {
+  padding: 0 16px;
+}
+
+
+.el-menu-item {
+  height: 60px;
+  line-height: 60px;
+  border-bottom: 1px solid #DCDFE6;
+}
+
+.avator {
+  margin-top: 8px;
+}
+
+.el-menu-item.is-active {
+  background-color: #f0f0f0 !important;
+  color: rgba(51, 69, 90, 1) !important;
+  font-weight: bold;
+}
+
+.el-header,
+.el-aside > div {
+  background-color: #4e6781 !important;
+  border-bottom: 1px solid #DCDFE6;
+  color: #fff;
+  /*line-height: 50px !important;*/
+  /*text-align: left !important;*/
+  padding: 0 16px;
+}
+
+/*.el-col,*/
+/*[name='fade'] > a {*/
+/*  color: #fff;*/
+/*}*/
