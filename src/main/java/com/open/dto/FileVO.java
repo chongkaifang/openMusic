@@ -1,9 +1,5 @@
 package com.open.dto;
 
-/**
- * @date 2021/3/17 16:02
- * @description
- */
 public class FileVO {
     private String flag;
     private String fileName;

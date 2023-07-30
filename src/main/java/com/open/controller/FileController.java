@@ -16,8 +16,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 /**
- * @date 2021/3/17 10:16
- * @description 文件上传
+ * 文件上传
  */
 @RestController
 @RequestMapping("/files")
@@ -25,8 +24,6 @@ public class FileController {
 
     /**
      * 单文件上传
-     * @param file
-     * @return
      */
     @PostMapping("/upload")
     public Result<String> upload(MultipartFile file) {
@@ -45,8 +42,6 @@ public class FileController {
 
     /**
      * 多文件上传
-     * @param request
-     * @return
      */
     @PostMapping("/upload/multiple")
     public Result<List<FileVO>> multipleUpload(HttpServletRequest request) {
@@ -77,8 +72,6 @@ public class FileController {
 
     /**
      * 获取文件
-     * @param flag
-     * @param response
      */
     @GetMapping("/{flag}")
     public void avatarPath(@PathVariable String flag, HttpServletResponse response) {
