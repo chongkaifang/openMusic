@@ -41,6 +41,12 @@ public class Song {
     private String songUrl;
 
     /**
+     * 歌词
+     */
+    @Column(name = "song_lyric")
+    private String songLyric;
+
+    /**
      * 专辑
      */
     @Column(name = "song_album")
@@ -142,5 +148,13 @@ public class Song {
 
     public void setAlbumId(Long albumId) {
         this.albumId = albumId;
+    }
+
+    public String getSongLyric() {
+        return songLyric;
+    }
+
+    public void setSongLyric(String songLyric) {
+        this.songLyric = songLyric;
     }
 }

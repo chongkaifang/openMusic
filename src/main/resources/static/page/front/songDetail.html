@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>歌曲详情</title>
     <link rel="stylesheet" href="../../css/element.css">
-    <link rel="stylesheet" href="../../css/audio.css">
+    <!--<link rel="stylesheet" href="../../css/audio.css">-->
     <link rel="stylesheet" href="../../css/base.css">
     <link rel="stylesheet" href="../../css/APlayer.min.css">
     <style>
@@ -95,10 +95,10 @@
             <div style="background-color: white;width: 100%; min-height: calc(100vh - 70px)">
                 <div style="padding: 10px">
                     <div style="margin-top: 20px">
-                        <!--<div style="width: 30%; text-align: center; display: inline-block">
+                        <div style="width: 30%; text-align: center; display: inline-block">
                             <img style="width: 200px" src="/images/播放器.png" alt="">
-                        </div>-->
-                        <div style="width: 100%; padding: 0 50px; display: inline-block; vertical-align: top ">
+                        </div>
+                        <div style="width: 65%; padding: 0 50px; display: inline-block; vertical-align: top ">
                             <div style="font-size: 24px; padding-bottom: 20px">{{detail.songName}}</div>
                             <div style="padding: 10px 0">作词：{{detail.songLyricist}}</div>
                             <div style="padding: 10px 0">作曲：{{detail.songComposer}}</div>
@@ -106,6 +106,9 @@
                             <div style="padding: 10px 0">
                                 <!--<audio :src=`/files/${detail.songUrl}` controls></audio>-->
                                 <div id="aplayer"></div>
+                            </div>
+                            <div style="padding: 10px 0;overflow-y:scroll;overflow-x:hidden;height:500px;width: 400px" >
+                                <p style="white-space: pre-wrap;">{{detail.songLyric}}</p>
                             </div>
                         </div>
                     </div>
@@ -197,21 +200,10 @@
 <script src="../../js/jquery.min.js"></script>
 <script src="../../js/vue.min.js"></script>
 <script src="../../js/element.js"></script>
-<script src="../../js/audio.js"></script>
+<!--<script src="../../js/audio.js"></script>-->
 <script src="../../js/APlayer.min.js"></script>
 <script>
-    const ap = new APlayer({
-        container: document.getElementById('aplayer'),
-        lrcType: 3,
-        audio: {
-            name: 'name',
-            artist: 'artist',
-            url: 'demo.mp3',
-            cover: 'demo.jpg',
-            lrc: 'lrc.lrc'
-        }
-    });
-    new Vue({
+    let vObj = new Vue({
         el: "#wrapper",
         data: {
             user: {},
@@ -267,6 +259,19 @@
                 $.get("/song/" + songId).then(res => {
                     if (res.code === '0') {
                         this.detail = res.data;
+                        new APlayer({
+                            container: document.getElementById('aplayer'),
+                            lrcType: 3,
+                            audio: {
+                                name: this.detail.songName,
+                                artist: this.detail.songSinger,
+                                url: '/files/audio/'+this.detail.songUrl,
+                                cover: '/images/播放器.png',
+                                lrc: '/files/r'+this.detail.songUrl+'.lrc'
+                            },
+                            preload: 'auto',
+                            fixed: true
+                        });
                     } else {
                         this.$message({
                             type: "warning",
@@ -336,7 +341,7 @@
                 })
             }
         }
-    })
+    });
 </script>
 </body>
 </html>

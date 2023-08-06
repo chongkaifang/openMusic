@@ -39,6 +39,7 @@ public class SongController {
 
     @GetMapping("/{id}")
     public Result<Song> findById(@PathVariable Long id) {
+        Song s = songService.findById(id);
         return Result.success(songService.findById(id));
     }
 

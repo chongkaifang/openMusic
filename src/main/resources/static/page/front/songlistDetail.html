@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>歌单详情</title>
     <link rel="stylesheet" href="../../css/element.css">
-    <link rel="stylesheet" href="../../css/audio.css">
+    <!--<link rel="stylesheet" href="../../css/audio.css">-->
     <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/APlayer.min.css">
     <style>
         [v-cloak] {
             display: none;
@@ -132,7 +133,7 @@
                                 align="center"
                                 width="50">
                         </el-table-column>
-                        <el-table-column
+                       <!-- <el-table-column
                                 label="播放"
                                 width="50"
                                 label=""
@@ -141,7 +142,7 @@
                                 <i class="el-icon-video-play" style="cursor: pointer; font-size: 20px"
                                    @click="play(scope.row)"></i>
                             </template>
-                        </el-table-column>
+                        </el-table-column>-->
                         <el-table-column
                                 label="歌曲名称"
                                 align="center"
@@ -188,7 +189,8 @@
         </el-col>
     </el-row>
 
-    <div class="audio-box">
+    <div id="aplayer"></div>
+    <!--<div class="audio-box">
         <div class="audio-container">
             <div class="audio-cover"></div>
             <div class="audio-view">
@@ -230,14 +232,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 </div>
 
 <script src="../../js/jquery.min.js"></script>
 <script src="../../js/vue.min.js"></script>
 <script src="../../js/element.js"></script>
-<script src="../../js/audio.js"></script>
+<!--<script src="../../js/audio.js"></script>-->
+<script src="../../js/APlayer.min.js"></script>
 <script>
     let audioFn;
     new Vue({
@@ -276,16 +279,35 @@
                             if (res.code === '0') {
                                 let songs = [];
                                 this.tableData = res.data;
-                                for (const item of this.tableData) {
+                                /*for (const item of this.tableData) {
                                     songs.push({src: "/files/" + item.songUrl, title: item.songName});
+                                }*/
+
+                                for (const item of this.tableData) {
+                                    songs.push({
+                                        name: item.songName,
+                                        artist: item.songSinger,
+                                        url: '/files/audio/'+item.songUrl,
+                                        cover: '/images/播放器.png',
+                                        lrc: '/files/r'+item.songUrl+'.lrc'
+                                    });
                                 }
 
-                                this.$nextTick(() => {
+                                new APlayer({
+                                    container: document.getElementById('aplayer'),
+                                    lrcType: 3,
+                                    audio: songs,
+                                    preload: 'auto',
+                                    fixed: true,
+                                    listFolded: false
+                                });
+
+                                /*this.$nextTick(() => {
                                     audioFn = audioPlay({
                                         song: songs,
                                         autoPlay: true  //是否立即播放第一首，autoPlay为true且song为空，会alert文本提示并退出
                                     });
-                                })
+                                })*/
                             }
                         });
 
