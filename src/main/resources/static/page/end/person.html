@@ -14,7 +14,7 @@
             <div style="background-color: black; height: 50px; line-height: 50px; text-align: center;
                 color: white; font-size: 20px;">
                 <transition name="el-fade-in-linear">
-                    <span name="fade" ><a href="/page/end/index.html" style="color: white">时代音乐小站</a></span>
+                    <span name="fade" ><a href="/page/end/index.html" style="color: white">开放音乐平台</a></span>
                 </transition>
             </div>
             <el-menu style="border: none;" text-color="gray" active-text-color="#ffd04b"
@@ -26,25 +26,25 @@
                         <span>首页</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/user.html">
+                <a v-if="user.userId === 1" href="/page/end/user.html">
                     <el-menu-item index="1">
                         <i class="el-icon-user"></i>
                         <span>用户管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/singer.html">
+                <a v-if="user.userId === 1" href="/page/end/singer.html">
                     <el-menu-item index="2">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">歌手管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/zhuanji.html">
+                <a v-if="user.userId === 1" href="/page/end/album.html">
                     <el-menu-item index="3">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">专辑管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/song.html">
+                <a v-if="user.userId === 1" href="/page/end/song.html">
                     <el-menu-item index="4">
                         <i class="el-icon-headset"></i>
                         <span slot="title">歌曲管理</span>
@@ -71,9 +71,9 @@
                         <a href="/page/front/index.html" target="_blank">跳转到首页</a>
                     </el-col>
                     <el-col :span="2" :offset="19" style="text-align: right">
-                        <span style="color: white; margin-right: 10px">{{user.username}}</span>
+                        <span style="color: white; margin-right: 10px">{{user.userName}}</span>
                         <el-dropdown>
-                            <img :src=`/files/${user.avatar}`
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -105,7 +105,7 @@
                                 <el-row justify="center">
                                     <el-col :span="24">
                                         <div style="width: 100px; margin: 0 auto; position: relative; padding-bottom: 20px">
-                                            <img style="width: 100px; height: 100px; border-radius: 50%; " :src=`/files/${user.avatar}` alt="">
+                                            <img style="width: 100px; height: 100px; border-radius: 50%; " :src=`/files/${user.userAvatar}` alt="">
                                             <input @change="upload" type="file" id="avatar" style="width: 100px; height: 100px; opacity: 0; position: absolute; top: 0; left: 0">
                                         </div>
                                     </el-col>
@@ -113,19 +113,19 @@
 
                                 <el-row style="padding: 10px 0;">
                                     <el-col :span="12" style="text-align: right">姓名：</el-col>
-                                    <el-col :span="12">{{user.username}}</el-col>
+                                    <el-col :span="12">{{user.userName}}</el-col>
                                 </el-row>
                                 <el-row style="padding: 10px 0;">
                                     <el-col :span="12" style="text-align: right">性别：</el-col>
-                                    <el-col :span="12">{{user.sex}}</el-col>
+                                    <el-col :span="12">{{user.userSex}}</el-col>
                                 </el-row>
                                 <el-row style="padding: 10px 0">
                                     <el-col :span="12" style="text-align: right">邮箱：</el-col>
-                                    <el-col :span="12">{{user.email}}</el-col>
+                                    <el-col :span="12">{{user.userEmail}}</el-col>
                                 </el-row>
                                 <el-row style="padding: 10px 0">
                                     <el-col :span="12" style="text-align: right">电话：</el-col>
-                                    <el-col :span="12">{{user.phone}}</el-col>
+                                    <el-col :span="12">{{user.userPhone}}</el-col>
                                 </el-row>
 
                             </div>
@@ -139,16 +139,16 @@
                        close-on-click-modal="false" close-on-press-escape="false" show-close="false">
                 <el-form :model="user">
                     <el-form-item label="用户名" label-width="100px">
-                        <el-input disabled v-model="user.username" autocomplete="off" style="width: 80%"></el-input>
+                        <el-input disabled v-model="user.userName" autocomplete="off" style="width: 80%"></el-input>
                     </el-form-item>
                     <el-form-item label="密码" label-width="100px">
-                        <el-input v-model="user.password" autocomplete="off" style="width: 80%"></el-input>
+                        <el-input v-model="user.userPassword" autocomplete="off" style="width: 80%"></el-input>
                     </el-form-item>
                     <el-form-item label="邮箱" label-width="100px">
-                        <el-input v-model="user.email" autocomplete="off" style="width: 80%"></el-input>
+                        <el-input v-model="user.userEmail" autocomplete="off" style="width: 80%"></el-input>
                     </el-form-item>
                     <el-form-item label="电话" label-width="100px">
-                        <el-input v-model="user.phone" autocomplete="off" style="width: 80%"></el-input>
+                        <el-input v-model="user.userPhone" autocomplete="off" style="width: 80%"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -201,7 +201,7 @@
                             type: "success",
                             message: "上传成功"
                         });
-                        this.user.avatar = res.data;
+                        this.user.userAvatar = res.data;
                         $.ajax({
                             url: '/user',
                             contentType: "application/json",

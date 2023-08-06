@@ -20,7 +20,7 @@
             <div style="background-color: black; height: 50px; line-height: 50px; text-align: center;
                 color: white; font-size: 20px;">
                 <transition name="el-fade-in-linear">
-                    <span name="fade" ><a href="/page/end/index.html" style="color: white">时代音乐小站</a></span>
+                    <span name="fade" ><a href="/page/end/index.html" style="color: white">开放音乐平台</a></span>
                 </transition>
             </div>
             <el-menu style="border: none;" text-color="gray" active-text-color="#ffd04b"
@@ -32,25 +32,25 @@
                         <span>首页</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/user.html">
+                <a v-if="user.userId === 1" href="/page/end/user.html">
                     <el-menu-item index="1">
                         <i class="el-icon-user"></i>
                         <span>用户管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/singer.html">
+                <a v-if="user.userId === 1" href="/page/end/singer.html">
                     <el-menu-item index="2">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">歌手管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/zhuanji.html">
+                <a v-if="user.userId === 1" href="/page/end/album.html">
                     <el-menu-item index="3">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">专辑管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/song.html">
+                <a v-if="user.userId === 1" href="/page/end/song.html">
                     <el-menu-item index="4">
                         <i class="el-icon-headset"></i>
                         <span slot="title">歌曲管理</span>
@@ -77,9 +77,9 @@
                         <a href="/page/front/index.html" target="_blank">跳转到首页</a>
                     </el-col>
                     <el-col :span="2" :offset="19" style="text-align: right">
-                        <span style="color: white; margin-right: 10px">{{user.username}}</span>
+                        <span style="color: white; margin-right: 10px">{{user.userName}}</span>
                         <el-dropdown>
-                            <img :src=`/files/${user.avatar}`
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -95,7 +95,7 @@
             <el-main>
                 <div style="color: black; font-size: 20px; margin: 10px 0">歌单管理</div>
                 <div style="height: 1px; background-color: white"></div>
-                <el-input v-model="name" style="width: 20%;" suffix-icon="el-icon-search" placeholder="请输入名称按回车搜索" @keyup.enter.native="loadTable"></el-input>
+                <el-input v-model="songListName" style="width: 20%;" suffix-icon="el-icon-search" placeholder="请输入名称按回车搜索" @keyup.enter.native="loadTable"></el-input>
                 <el-button @click="add" type="primary" size="mini" style="margin: 10px 0">新增</el-button>
                 <el-table
                         :data="tableData"
@@ -104,30 +104,30 @@
                         style="width: 100%">
                     <el-table-column label="封面" width="80px">
                         <template slot-scope="scope">
-                            <img :src=`/files/${scope.row.img}` style="width: 50px" alt="">
+                            <img :src=`/files/${scope.row.songListImg}` style="width: 50px" alt="">
                         </template>
                     </el-table-column>
                     </el-table-column>
                     <el-table-column
-                            prop="name"
+                            prop="songListName"
                             label="名称"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="playNum"
+                            prop="songListPlayNum"
                             label="播放量"
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="tag"
+                            prop="songListTag"
                             label="标签">
                     </el-table-column>
                     <el-table-column
-                            prop="username"
+                            prop="songListUsername"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime"
+                            prop="songListCreateTime"
                             label="创建时间">
                     </el-table-column>
                     <el-table-column
@@ -136,7 +136,7 @@
                             width="100">
                         <template slot-scope="scope">
                             <el-button @click="edit(scope.row)" type="text">编辑</el-button>
-                            <el-button @click="del(scope.row.id)" type="text">删除</el-button>
+                            <el-button @click="del(scope.row.songListId)" type="text">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -156,20 +156,20 @@
                            close-on-click-modal="false" close-on-press-escape="false" show-close="false">
                     <el-form :model="entity">
                         <el-form-item label="名称" label-width="100px">
-                            <el-input v-model="entity.name" autocomplete="off" style="width: 80%"></el-input>
+                            <el-input v-model="entity.songListName" autocomplete="off" style="width: 80%"></el-input>
                         </el-form-item>
                         <el-form-item label="播放量" label-width="100px">
-                            <el-input v-model="entity.playNum" autocomplete="off" style="width: 80%"></el-input>
+                            <el-input v-model="entity.songListPlayNum" autocomplete="off" style="width: 80%"></el-input>
                         </el-form-item>
                         <el-form-item label="标签" label-width="100px">
-                            <el-input v-model="entity.tag" autocomplete="off" style="width: 80%"></el-input>
+                            <el-input v-model="entity.songListTag" autocomplete="off" style="width: 80%"></el-input>
                         </el-form-item>
                         <el-form-item label="封面" label-width="100px">
                             <div class="upload-box" style="display: inline-block">
                                 上传
                                 <input type="file" id="file" @change="upload()">
                             </div>
-                            <span>{{entity.img}}</span>
+                            <span>{{entity.songListImg}}</span>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -200,7 +200,7 @@
             dialogFormVisible: false,
             entity: {},
             isCollapse: false,
-            name: ''
+            songListName: ''
         },
         created() {
             this.user = JSON.parse(localStorage.getItem("user"));
@@ -226,7 +226,7 @@
                         let file = $("#file");
                         file.val("");
 
-                        this.entity.img = res.data;
+                        this.entity.songListImg = res.data;
                     }
                 })
             },
@@ -236,7 +236,7 @@
                 location.href = "login.html";
             },
             loadTable() {
-                $.get(urlBase + "/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize + "&name=" + this.name).then(res => {
+                $.get(urlBase + "/page?pageNum=" + this.pageNum + "&pageSize=" + this.pageSize + "&name=" + this.songListName).then(res => {
                     this.tableData = res.data.content;
                 this.total = res.data.totalElements;
             })
@@ -257,7 +257,7 @@
                 this.dialogFormVisible = true;
             },
             save() {
-                let type = this.entity.id ? "PUT" : "POST";
+                let type = this.entity.songListId ? "PUT" : "POST";
                 $.ajax({
                     url: urlBase,
                     type: type,
@@ -283,7 +283,7 @@
                 this.entity = obj;
                 this.dialogFormVisible = true;
             },
-            del(id) {
+            del(songListId) {
                 let _this = this;
                 this.$confirm('确认删除歌单？', '系统提示', {
                     confirmButtonText: '确定',
@@ -292,7 +292,7 @@
                     type: 'warning'
                 }).then(function(){
                     $.ajax({
-                        url: urlBase + id,
+                        url: urlBase + songListId,
                         type: "delete"
                     }).then(res => {
                         if (res.code === '0') {

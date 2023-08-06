@@ -22,7 +22,7 @@ public class SongController {
 
     @PostMapping
     public Result<Song> save(@RequestBody Song song) {
-        song.setHot(0);
+        song.setSongHot(0);
         return Result.success(songService.save(song));
     }
 
@@ -45,7 +45,7 @@ public class SongController {
     @GetMapping("/updateHot/{id}")
     public Result<?> updateHot(@PathVariable Long id) {
         Song song = songService.findById(id);
-        song.setHot(song.getHot() + 1);
+        song.setSongHot(song.getSongHot() + 1);
         songService.save(song);
         return Result.success();
     }
@@ -56,8 +56,8 @@ public class SongController {
     }
 
     @GetMapping("/album/{id}")
-    public Result<List<Song>> findAllByAlbum(@PathVariable Long id) {
-        return Result.success(songService.findAllByAlbum(id));
+    public Result<List<Song>> findAllBySongAlbum(@PathVariable Long id) {
+        return Result.success(songService.findAllBySongAlbum(id));
     }
 
     @GetMapping("/statics")
@@ -77,7 +77,7 @@ public class SongController {
                                        @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                        @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         Singer singer = singerService.findById(singerId);
-        return Result.success(songService.findBySinger(singer.getName(), pageNum, pageSize));
+        return Result.success(songService.findBySinger(singer.getSingerName(), pageNum, pageSize));
     }
 
 }

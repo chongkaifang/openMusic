@@ -7,51 +7,52 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "t_comment")
+@Table(name = "comment")
 public class Comment {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "comment_id")
+    private Long commentId;
 
     /**
      * 内容
      */
-    @Column(name = "content")
-    private String content;
+    @Column(name = "comment_content")
+    private String commentContent;
 
     /**
      * 时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @Column(name = "time")
-    private Date time;
+    @Column(name = "comment_time")
+    private Date commentTime;
 
     /**
      * 评论人
      */
-    @Column(name = "username")
-    private String username;
+    @Column(name = "comment_username")
+    private String commentUsername;
 
     /**
      * 评论人头像
      */
-    @Column(name = "avatar")
-    private String avatar;
+    @Column(name = "comment_avatar")
+    private String commentAvatar;
 
     /**
      * 点赞数
      */
-    @Column(name = "praise")
-    private Integer praise;
+    @Column(name = "comment_praise")
+    private Integer commentPraise;
 
-    @Column(name = "p_id")
-    private Long pId;
+    @Column(name = "comment_p_id")
+    private Long commentPId;
 
-    @Column(name = "song_id")
-    private Long songId;
+    @Column(name = "comment_song_id")
+    private Long commentSongId;
 
     @Transient
     private List<Comment> subComment;
@@ -64,67 +65,67 @@ public class Comment {
         this.subComment = subComment;
     }
 
-    public Long getSongId() {
-        return songId;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public void setSongId(Long songId) {
-        this.songId = songId;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
 
-    public Long getId() {
-        return id;
+    public String getCommentContent() {
+        return commentContent;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
     }
 
-    public String getContent() {
-        return content;
+    public Date getCommentTime() {
+        return commentTime;
     }
 
-    public void setContent(String content) {
-         this.content = content;
+    public void setCommentTime(Date commentTime) {
+        this.commentTime = commentTime;
     }
 
-    public Date getTime() {
-        return time;
+    public String getCommentUsername() {
+        return commentUsername;
     }
 
-    public void setTime(Date time) {
-         this.time = time;
+    public void setCommentUsername(String commentUsername) {
+        this.commentUsername = commentUsername;
     }
 
-    public String getUsername() {
-        return username;
+    public String getCommentAvatar() {
+        return commentAvatar;
     }
 
-    public void setUsername(String username) {
-         this.username = username;
+    public void setCommentAvatar(String commentAvatar) {
+        this.commentAvatar = commentAvatar;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public Integer getCommentPraise() {
+        return commentPraise;
     }
 
-    public void setAvatar(String avatar) {
-         this.avatar = avatar;
+    public void setCommentPraise(Integer commentPraise) {
+        this.commentPraise = commentPraise;
     }
 
-    public Integer getPraise() {
-        return praise;
+    public Long getCommentPId() {
+        return commentPId;
     }
 
-    public void setPraise(Integer praise) {
-         this.praise = praise;
+    public void setCommentPId(Long commentPId) {
+        this.commentPId = commentPId;
     }
 
-    public Long getpId() {
-        return pId;
+    public Long getCommentSongId() {
+        return commentSongId;
     }
 
-    public void setpId(Long pId) {
-        this.pId = pId;
+    public void setCommentSongId(Long commentSongId) {
+        this.commentSongId = commentSongId;
     }
 }

@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface SongListRelDao extends JpaRepository<SongListRel, Long>, JpaSpecificationExecutor<SongListRel> {
 
-    List<SongListRel> findByListId(Long listId);
+    List<SongListRel> findBySongListRelListId(Long songListRelListId);
 
-    SongListRel findBySongIdAndListId(Long songId, Long listId);
+    SongListRel findBySongListRelSongIdAndSongListRelListId(Long songListRelSongId, Long songListRelListId);
     @Modifying
-    @Query(value = "delete from t_song_list_rel where song_id = ?1 and list_id = ?2", nativeQuery = true)
-    Integer delBySongIdAndListId(Long songId, Long listId);
+    @Query(value = "delete from song_list_rel where song_list_rel_song_id = ?1 and song_list_rel_list_id = ?2", nativeQuery = true)
+    Integer delBySongListRelSongIdAndSongListRelListId(Long songListRelSongId, Long songListRelListId);
 }

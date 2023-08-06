@@ -36,7 +36,7 @@ public class SingerService {
         Page<Singer> pageInfo;
         if (StrUtil.isNotBlank(name)) {
             Specification<Singer> specification = (Specification<Singer>) (root, criteriaQuery, cb) -> {
-                Predicate p1 = cb.like(root.get("name"), "%" + name + "%");
+                Predicate p1 = cb.like(root.get("singerName"), "%" + name + "%");
                 return cb.and(p1);
             };
             pageInfo = singerDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize));

@@ -12,10 +12,10 @@
         <div style="width: 500px; margin: 100px auto; border: 1px solid #ccc">
             <div style="width: 100%; height: 100px; color: steelblue; font-size: 30px;line-height: 100px; text-align: center">欢迎注册</div>
             <div style="margin-top: 25px; width: 100%; height: 350px; text-align: center">
-                <input v-model="user.username" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%" placeholder="请输入账号">
-                <input v-model="user.password" type="password" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%; margin-top: 20px" placeholder="请输入密码">
-                <input v-model="user.email" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%;  margin-top: 20px" placeholder="请输入邮箱">
-                <input v-model="user.phone" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%;  margin-top: 20px" placeholder="请输入电话">
+                <input v-model="user.userName" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%" placeholder="请输入账号">
+                <input v-model="user.userPassword" type="password" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%; margin-top: 20px" placeholder="请输入密码">
+                <input v-model="user.userEmail" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%;  margin-top: 20px" placeholder="请输入邮箱">
+                <input v-model="user.userPhone" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%;  margin-top: 20px" placeholder="请输入电话">
                 <button @click="register" style="height: 40px; padding: 10px; width: 60%; margin-top: 25px; background-color: steelblue; color: white">注册</button>
             </div>
         </div>
@@ -33,14 +33,14 @@
             },
             methods: {
                 register() {
-                    if (!this.user.username) {
+                    if (!this.user.userName) {
                         this.$message({
                             message: "请输入用户名",
                             type: "error"
                         });
                         return;
                     }
-                    if (!this.user.password) {
+                    if (!this.user.userPassword) {
                         this.$message({
                             message: "请输入密码",
                             type: "error"

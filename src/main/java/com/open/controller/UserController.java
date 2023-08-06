@@ -63,12 +63,12 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result<User> register(@RequestBody User user, HttpServletRequest request) {
-        User dbUser = userService.findByUsername(user.getUsername());
+        User dbUser = userService.findByUserName(user.getUserName());
         if (dbUser != null) {
             throw new CustomException("-1", "用户已注册");
         }
-        if (user.getPassword() == null) {
-            user.setPassword("123456");
+        if (user.getUserPassword() == null) {
+            user.setUserPassword("123456");
         }
         User res = userService.add(user);
         request.getSession().setAttribute("user", res);
@@ -116,9 +116,9 @@ public class UserController {
         List<User> all = userService.findAll();
         for (User user : all) {
             Map<String, Object> row1 = new LinkedHashMap<>();
-            row1.put("用户名", user.getUsername());
-            row1.put("邮箱", user.getEmail());
-            row1.put("电话", user.getPhone());
+            row1.put("用户名", user.getUserName());
+            row1.put("邮箱", user.getUserEmail());
+            row1.put("电话", user.getUserPhone());
             list.add(row1);
         }
 

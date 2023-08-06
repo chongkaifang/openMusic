@@ -50,7 +50,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -61,7 +61,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -69,7 +69,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -77,8 +77,8 @@
             <el-col :span="6">
                 <div style="line-height: 60px; text-align: right">
                     <div style="margin-right: 20px">
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -98,14 +98,14 @@
 
     <el-row type="flex" justify="center" style="margin-top: 20px">
         <el-col :span="3" style="border-right: 1px solid #cccccc">
-            <img :src=`/files/${singer.img}` style="width: 150px">
-            <div style="font-size: 13px; color: #666; padding-top: 20px">姓名：{{singer.name}}</div>
-            <div style="font-size: 13px; color: #666; padding-top: 5px">性别： {{singer.sex}}</div>
-            <div style="font-size: 13px; color: #666; padding-top: 5px">出生： {{singer.age}}</div>
-            <div style="font-size: 13px; color: #666; padding-top: 5px">来自：{{singer.comeFrom}}</div>
-            <div style="font-size: 13px; color: #666; padding-top: 5px; margin-right: 30px">代表作：{{singer.works}}</div>
+            <img :src=`/files/${singer.singerImg}` style="width: 150px">
+            <div style="font-size: 13px; color: #666; padding-top: 20px">姓名：{{singer.singerName}}</div>
+            <div style="font-size: 13px; color: #666; padding-top: 5px">性别： {{singer.singerSex}}</div>
+            <div style="font-size: 13px; color: #666; padding-top: 5px">出生： {{singer.singerAge}}</div>
+            <div style="font-size: 13px; color: #666; padding-top: 5px">来自：{{singer.singerComeFrom}}</div>
+            <div style="font-size: 13px; color: #666; padding-top: 5px; margin-right: 30px">代表作：{{singer.singerWorks}}</div>
             <div style="font-size: 13px; color: #666; padding-top: 15px">歌手简介：</div>
-            <div style="font-size: 13px; color: #666; margin-top: 10px; margin-right: 30px">{{singer.introduction}}</div>
+            <div style="font-size: 13px; color: #666; margin-top: 10px; margin-right: 30px">{{singer.singerIntroduction}}</div>
         </el-col>
         <el-col :span="12" offset="1">
             <div class="v-hd2" style="display: inline-block">
@@ -138,24 +138,24 @@
                         align="center"
                 >
                     <template slot-scope="scope">
-                        <a :href=`/page/front/songDetail.html?id=${scope.row.id}`>{{scope.row.name}}</a>
+                        <a :href=`/page/front/songDetail.html?id=${scope.row.songId}`>{{scope.row.songName}}</a>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="singer"
+                        prop="songSinger"
                         label="作曲人"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="lyricist"
+                        prop="songLyricist"
                         label="作词人"
                         align="center"
                 >
                 </el-table-column>
                 </el-table-column>
                 <el-table-column
-                        prop="hot"
+                        prop="songHot"
                         label="热度🔥"
                         align="center"
                 >
@@ -180,7 +180,7 @@
         <el-form :model="form">
             <el-form-item label="歌单选择" label-width="120px">
                 <el-select v-model="form.listId" placeholder="请选择你的歌单">
-                    <el-option v-for="item in list" :label="item.name" :value="item.id"></el-option>
+                    <el-option v-for="item in list" :label="item.songListName" :value="item.songListId"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -230,7 +230,7 @@
                     if (res.code === '0') {
                         this.user = res.data;
                         // 加载当前用户歌单信息
-                        $.get("/songList/user/" + this.user.id).then(res => {
+                        $.get("/songList/user/" + this.user.userId).then(res => {
                             if (res.code === '0') {
                                 this.list = res.data;
                             } else {

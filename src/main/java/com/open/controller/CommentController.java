@@ -37,8 +37,8 @@ public class CommentController {
     }
 
     @GetMapping("/song/{songId}")
-    public Result<List<Comment>> findBySongId(@PathVariable Long songId) {
-        return Result.success(commentService.findBySongId(songId));
+    public Result<List<Comment>> findByCommentSongId(@PathVariable Long songId) {
+        return Result.success(commentService.findByCommentSongId(songId));
     }
 
     @GetMapping

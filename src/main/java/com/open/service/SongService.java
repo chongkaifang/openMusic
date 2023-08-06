@@ -3,9 +3,9 @@ package com.open.service;
 import cn.hutool.core.util.StrUtil;
 import com.open.dao.SingerDao;
 import com.open.dao.SongDao;
-import com.open.dao.ZhuanjiDao;
+import com.open.dao.AlbumDao;
 import com.open.entity.Song;
-import com.open.entity.Zhuanji;
+import com.open.entity.Album;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +23,7 @@ public class SongService {
     @Resource
     private SongDao songDao;
     @Resource
-    private ZhuanjiDao zhuanjiDao;
+    private AlbumDao albumDao;
     @Resource
     private SingerDao singerDao;
 
@@ -47,18 +47,18 @@ public class SongService {
         Page<Song> songs;
         if (StrUtil.isNotBlank(name)) {
             Specification<Song> specification = (Specification<Song>) (root, criteriaQuery, cb) -> {
-                Predicate p1 = cb.like(root.get("name"), "%" + name + "%");
-                Predicate p2 = cb.like(root.get("singer"), "%" + name + "%");
+                Predicate p1 = cb.like(root.get("songName"), "%" + name + "%");
+                Predicate p2 = cb.like(root.get("songSinger"), "%" + name + "%");
                 return cb.or(p1, p2);
             };
-            songs = songDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "hot")));
+            songs = songDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "songHot")));
         } else {
-            songs = songDao.findAll(PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "hot")));
+            songs = songDao.findAll(PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "songHot")));
         }
         for (Song song : songs) {
             // 更新专辑id和歌手id
-            song.setAlbumId(zhuanjiDao.findAlbumIdByAlbumName(song.getAlbum()));
-            song.setSingerId(singerDao.findSingerIdBySingerName(song.getSinger()));
+            song.setAlbumId(albumDao.findAlbumIdByAlbumName(song.getSongAlbum()));
+            song.setSingerId(singerDao.findSingerIdBySingerName(song.getSongSinger()));
         }
         return songs;
     }
@@ -66,29 +66,29 @@ public class SongService {
     public Page<Song> findBySinger(String name, int pageNum, int pageSize) {
         if (StrUtil.isNotBlank(name)) {
             Specification<Song> specification = (Specification<Song>) (root, criteriaQuery, cb) -> {
-                Predicate p1 = cb.equal(root.get("singer"), name);
-                criteriaQuery.orderBy(cb.desc(root.get("hot")));
+                Predicate p1 = cb.equal(root.get("songSinger"), name);
+                criteriaQuery.orderBy(cb.desc(root.get("songHot")));
                 return cb.and(p1);
             };
-            return songDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "hot")));
+            return songDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "songHot")));
         }
-        return songDao.findAll(PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "hot")));
+        return songDao.findAll(PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.DESC, "songHot")));
 
     }
 
     public Map<String, Integer> statics() {
         Map<String, Integer> map = new HashMap<>();
-        Map<String, List<Song>> collect = songDao.findAll().stream().collect(Collectors.groupingBy(Song::getSinger));
+        Map<String, List<Song>> collect = songDao.findAll().stream().collect(Collectors.groupingBy(Song::getSongSinger));
         for (String s : collect.keySet()) {
             map.put(s, collect.get(s).size());
         }
         return map;
     }
 
-    public List<Song> findAllByAlbum(Long id) {
-        Zhuanji zhuanji = zhuanjiDao.findById(id).orElse(null);
-        if (zhuanji != null) {
-            return songDao.findAllByAlbum(zhuanji.getName());
+    public List<Song> findAllBySongAlbum(Long id) {
+        Album album = albumDao.findById(id).orElse(null);
+        if (album != null) {
+            return songDao.findAllBySongAlbum(album.getAlbumName());
         }
         return new ArrayList<>();
     }

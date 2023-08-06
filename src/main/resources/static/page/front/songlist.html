@@ -43,7 +43,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -54,7 +54,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -62,7 +62,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item nav-active">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -70,8 +70,8 @@
             <el-col :span="6">
                 <div style="line-height: 60px; text-align: right">
                     <div style="margin-right: 20px">
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -119,15 +119,15 @@
     <el-row type="flex" justify="center">
         <el-col :span="14">
             <el-card v-for="(item,index) in tableData" style="width: 22%; display: inline-block; margin: 20px 12px">
-                <a :href=`/page/front/songlistDetail.html?id=${item.id}`>
+                <a :href=`/page/front/songlistDetail.html?id=${item.songListId}`>
                     <div style="text-align: center">
-                        <img :src=`/files/${item.img}` alt="" style="width: 100%; border-radius: 5px">
+                        <img :src=`/files/${item.songListImg}` alt="" style="width: 100%; border-radius: 5px">
                     </div>
                     <div style="text-align: center; padding: 5px 0; color: #666">
-                        {{item.name}}
+                        {{item.songListName}}
                     </div>
                     <div style="text-align: center; font-size: 12px; color: #999">
-                        By {{item.username}}
+                        By {{item.songListUsername}}
                     </div>
                 </a>
             </el-card>
@@ -173,7 +173,7 @@
                 })
             },
             loadTable() {
-                // if (!this.user || !this.user.id) {
+                // if (!this.user || !this.user.userId) {
                 //     location.href = "/page/login.html";
                 //     return;
                 // }
@@ -183,7 +183,7 @@
                         let list = [];
                         // 截取字符串
                         res.data.forEach(item => {
-                            item.name = subStr(item.name, 9);
+                            item.songListName = subStr(item.songListName, 9);
                             list.push(item);
                         });
                         this.tableData = list;
@@ -197,7 +197,7 @@
 
             },
             changeMyList() {
-                if (!this.user || !this.user.id) {
+                if (!this.user || !this.user.userId) {
                     this.$message({
                         type: "warning",
                         message: '请先登录',
@@ -206,7 +206,7 @@
                 }
                 this.isMine = true;
                 this.tableData = this.tableData.filter(res => {
-                    return res.userId === this.user.id;
+                    return res.songListUserId === this.user.userId;
                 });
             },
             logout() {

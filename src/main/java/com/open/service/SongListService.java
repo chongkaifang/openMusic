@@ -39,9 +39,9 @@ public class SongListService {
         Page<SongList> pageInfo;
         if (StrUtil.isNotBlank(name)) {
             Specification<SongList> specification = (Specification<SongList>) (root, criteriaQuery, cb) -> {
-                Predicate p1 = cb.like(root.get("name"), "%" + name + "%");
-                if (user.getId() != 1) {
-                    Predicate p2 = cb.equal(root.get("userId"), user.getId());
+                Predicate p1 = cb.like(root.get("songListName"), "%" + name + "%");
+                if (user.getUserId() != 1) {
+                    Predicate p2 = cb.equal(root.get("songListUserId"), user.getUserId());
                     return cb.and(p1, p2);
                 } else {
                     return cb.and(p1);
@@ -49,9 +49,9 @@ public class SongListService {
             };
             pageInfo = songListDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize));
         } else {
-            if (user.getId() != 1) {
+            if (user.getUserId() != 1) {
                 Specification<SongList> specification = (Specification<SongList>) (root, criteriaQuery, cb) -> {
-                    Predicate p2 = cb.equal(root.get("userId"), user.getId());
+                    Predicate p2 = cb.equal(root.get("songListUserId"), user.getUserId());
                     return cb.and(p2);
                 };
                 pageInfo = songListDao.findAll(specification, PageRequest.of(pageNum - 1, pageSize));
@@ -63,7 +63,7 @@ public class SongListService {
     }
 
     public List<SongList> findUserSongList(Long userId) {
-        return songListDao.findByUserId(userId);
+        return songListDao.findBySongListUserId(userId);
     }
 
     public List<SongList> findHotSongList() {

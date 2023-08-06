@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface SongDao extends JpaRepository<Song, Long>, JpaSpecificationExecutor<Song> {
 
-    @Query(value = "select * from t_song where album = ?1 order by hot desc limit 4", nativeQuery = true)
-    List<Song> findHotByAlbum(String album);
+    @Query(value = "select * from song where song_album = ?1 order by song_hot desc limit 4", nativeQuery = true)
+    List<Song> findHotBySongAlbum(String songAlbum);
 
-    @Query(value = "select * from t_song where album = ?1 order by hot desc", nativeQuery = true)
-    List<Song> findAllByAlbum(String album);
+    @Query(value = "select * from song where song_album = ?1 order by song_hot desc", nativeQuery = true)
+    List<Song> findAllBySongAlbum(String songAlbum);
 }

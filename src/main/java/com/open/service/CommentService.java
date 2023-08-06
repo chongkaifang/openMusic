@@ -19,7 +19,7 @@ public class CommentService {
     private CommentDao commentDao;
 
     public Comment save(Comment comment) {
-        comment.setTime(new Date());
+        comment.setCommentTime(new Date());
         return commentDao.save(comment);
     }
 
@@ -38,11 +38,11 @@ public class CommentService {
         return commentDao.findAll(PageRequest.of(pageNum - 1, pageSize));
     }
 
-    public List<Comment> findBySongId(Long songId) {
-        List<Comment> comments = commentDao.findBySongId(songId);
-        List<Comment> firstComment = comments.stream().filter(comment -> comment.getpId() == null).collect(Collectors.toList());
+    public List<Comment> findByCommentSongId(Long songId) {
+        List<Comment> comments = commentDao.findByCommentSongId(songId);
+        List<Comment> firstComment = comments.stream().filter(comment -> comment.getCommentPId() == null).collect(Collectors.toList());
         for (Comment comment : firstComment) {
-            List<Comment> subList = comments.stream().filter(c -> comment.getId().equals(c.getpId())).collect(Collectors.toList());
+            List<Comment> subList = comments.stream().filter(c -> comment.getCommentId().equals(c.getCommentPId())).collect(Collectors.toList());
             comment.setSubComment(subList);
         }
         return firstComment;

@@ -21,9 +21,9 @@ public class SongListController {
     @PostMapping
     public Result<SongList> save(@RequestBody SongList songList, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        songList.setCreateTime(new Date());
-        songList.setUserId(user.getId());
-        songList.setUsername(user.getUsername());
+        songList.setSongListCreateTime(new Date());
+        songList.setSongListUserId(user.getUserId());
+        songList.setSongListUsername(user.getUserName());
         return Result.success(songListService.save(songList));
     }
 

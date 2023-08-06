@@ -42,7 +42,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -53,7 +53,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -61,7 +61,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -69,8 +69,8 @@
             <el-col :span="6">
                 <div style="line-height: 60px; text-align: right">
                     <div style="margin-right: 20px">
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -94,14 +94,14 @@
                 <div style="padding: 10px">
                     <div style="margin-top: 20px">
                         <div style="width: 30%; border-right: 1px solid #ccc; text-align: center; display: inline-block">
-                            <img style="width: 200px" :src=`/files/${detail.img}` alt="">
+                            <img style="width: 200px" :src=`/files/${detail.songListImg}` alt="">
                         </div>
                         <div style="width: 65%; padding: 0 20px; display: inline-block; vertical-align: top ">
-                            <div style="font-size: 22px; padding-bottom: 20px">{{detail.name}}</div>
-                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建人：{{detail.username}}</div>
-                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建时间： {{detail.createTime}}</div>
-                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">标签：{{detail.tag}}</div>
-                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">访问量：{{detail.playNum}}</div>
+                            <div style="font-size: 22px; padding-bottom: 20px">{{detail.songListame}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建人：{{detail.songListUsername}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">创建时间： {{detail.songListCreateTime}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">标签：{{detail.songListTag}}</div>
+                            <div style="font-size: 14px; color: #666; padding-bottom: 20px">访问量：{{detail.songListPlayNum}}</div>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
                     <div class="v-hd2" style="display: inline-block">
                         本歌单列表
                     </div>
-                    <div v-if="user && detail.userId === user.id" style="display: inline-block; float: right">
+                    <div v-if="user && detail.userId === user.userId" style="display: inline-block; float: right">
                         <el-button
                                 round
                                 size="small"
@@ -127,7 +127,7 @@
                             style="width: 100%"
                             @selection-change="handleSelectionChange"
                     >
-                        <el-table-column v-if="user && detail.userId === user.id"
+                        <el-table-column v-if="user && detail.userId === user.userId"
                                 type="selection"
                                 align="center"
                                 width="50">
@@ -148,35 +148,35 @@
                                 width="170"
                         >
                             <template slot-scope="scope">
-                                <a :href=`/page/front/songDetail.html?id=${scope.row.id}`>{{scope.row.name}}</a>
+                                <a :href=`/page/front/songDetail.html?id=${scope.row.songId}`>{{scope.row.songName}}</a>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="singer"
+                                prop="songSinger"
                                 label="歌手"
                                 align="center"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="lyricist"
+                                prop="songLyricist"
                                 label="作词"
                                 align="center"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="composer"
+                                prop="songComposer"
                                 label="作曲"
                                 align="center"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="hot"
+                                prop="songHot"
                                 label="热度🔥"
                                 align="center"
                         >
                         </el-table-column>
                         <el-table-column
-                                prop="album"
+                                prop="songAlbum"
                                 label="所属专辑"
                                 align="center"
                                 width="150"
@@ -277,7 +277,7 @@
                                 let songs = [];
                                 this.tableData = res.data;
                                 for (const item of this.tableData) {
-                                    songs.push({src: "/files/" + item.url, title: item.name});
+                                    songs.push({src: "/files/" + item.songUrl, title: item.songName});
                                 }
 
                                 this.$nextTick(() => {
@@ -314,7 +314,7 @@
                     type: 'warning'
                 }).then(function(){
                     let form = {};
-                    form.listId = _this.detail.id;
+                    form.listId = _this.detail.songListRelId;
                     form.songList = _this.multipleSelection;
                     $.ajax({
                         url: '/songListRel',
@@ -344,7 +344,7 @@
                 this.user = {};
             },
             play(item) {
-                audioFn.newSong({src: "/files/" + item.url, title: item.name}, true)
+                audioFn.newSong({src: "/files/" + item.songUrl, title: item.songName}, true)
             }
         }
     })

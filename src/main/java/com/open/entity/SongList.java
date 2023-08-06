@@ -6,107 +6,108 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "t_song_list")
+@Table(name = "song_list")
 public class SongList {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "song_list_id")
+    private Long songListId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "song_list_name")
+    private String songListName;
 
-    @Column(name = "img")
-    private String img;
+    @Column(name = "song_list_img")
+    private String songListImg;
 
     /**
      * 创建人
      */
-    @Column(name = "username")
-    private String username;
+    @Column(name = "song_list_username")
+    private String songListUsername;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "song_list_user_id")
+    private Long songListUserId;
 
     /**
      * 播放量
      */
-    @Column(name = "play_num")
-    private Integer playNum;
+    @Column(name = "song_list_play_num")
+    private Integer songListPlayNum;
 
     /**
      * 标签
      */
-    @Column(name = "tag")
-    private String tag;
+    @Column(name = "song_list_tag")
+    private String songListTag;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @Column(name = "create_time")
-    private Date createTime;
+    @Column(name = "song_list_create_time")
+    private Date songListCreateTime;
 
-    public Long getId() {
-        return id;
+    public Long getSongListId() {
+        return songListId;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setSongListId(Long songListId) {
+        this.songListId = songListId;
     }
 
-    public String getName() {
-        return name;
+    public String getSongListName() {
+        return songListName;
     }
 
-    public void setName(String name) {
-         this.name = name;
+    public void setSongListName(String songListName) {
+        this.songListName = songListName;
     }
 
-    public String getImg() {
-        return img;
+    public String getSongListImg() {
+        return songListImg;
     }
 
-    public void setImg(String img) {
-         this.img = img;
+    public void setSongListImg(String songListImg) {
+        this.songListImg = songListImg;
     }
 
-    public String getUsername() {
-        return username;
+    public String getSongListUsername() {
+        return songListUsername;
     }
 
-    public void setUsername(String username) {
-         this.username = username;
+    public void setSongListUsername(String songListUsername) {
+        this.songListUsername = songListUsername;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getSongListUserId() {
+        return songListUserId;
     }
 
-    public void setUserId(Long userId) {
-         this.userId = userId;
+    public void setSongListUserId(Long songListUserId) {
+        this.songListUserId = songListUserId;
     }
 
-    public Integer getPlayNum() {
-        return playNum;
+    public Integer getSongListPlayNum() {
+        return songListPlayNum;
     }
 
-    public void setPlayNum(Integer playNum) {
-         this.playNum = playNum;
+    public void setSongListPlayNum(Integer songListPlayNum) {
+        this.songListPlayNum = songListPlayNum;
     }
 
-    public String getTag() {
-        return tag;
+    public String getSongListTag() {
+        return songListTag;
     }
 
-    public void setTag(String tag) {
-         this.tag = tag;
+    public void setSongListTag(String songListTag) {
+        this.songListTag = songListTag;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getSongListCreateTime() {
+        return songListCreateTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setSongListCreateTime(Date songListCreateTime) {
+        this.songListCreateTime = songListCreateTime;
     }
 }

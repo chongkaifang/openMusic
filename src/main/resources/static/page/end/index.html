@@ -23,7 +23,7 @@
             <div style="background-color: black; height: 50px; line-height: 50px; text-align: center;
                 color: white; font-size: 20px;">
                 <transition name="el-fade-in-linear">
-                    <span name="fade" ><a href="/page/end/index.html" style="color: white">时代音乐小站</a></span>
+                    <span name="fade" ><a href="/page/end/index.html" style="color: white">开放音乐平台</a></span>
                 </transition>
             </div>
             <el-menu :default-openeds="['1']" style="border: none;" text-color="gray" active-text-color="#ffd04b"
@@ -34,25 +34,25 @@
                         <span>首页</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/user.html">
+                <a v-if="user.userId === 1" href="/page/end/user.html">
                     <el-menu-item index="1">
                         <i class="el-icon-user"></i>
                         <span>用户管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/singer.html">
+                <a v-if="user.userId === 1" href="/page/end/singer.html">
                     <el-menu-item index="2">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">歌手管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/zhuanji.html">
+                <a v-if="user.userId === 1" href="/page/end/album.html">
                     <el-menu-item index="3">
                         <i class="el-icon-s-opportunity"></i>
                         <span slot="title">专辑管理</span>
                     </el-menu-item>
                 </a>
-                <a v-if="user.id === 1" href="/page/end/song.html">
+                <a v-if="user.userId === 1" href="/page/end/song.html">
                     <el-menu-item index="4">
                         <i class="el-icon-headset"></i>
                         <span slot="title">歌曲管理</span>
@@ -79,9 +79,9 @@
                         <a href="/page/front/index.html" target="_blank">跳转到首页</a>
                     </el-col>
                     <el-col :span="2" :offset="19" style="text-align: right">
-                        <span style="color: white; margin-right: 10px">{{user.username}}</span>
+                        <span style="color: white; margin-right: 10px">{{user.userName}}</span>
                         <el-dropdown>
-                            <img :src=`/files/${user.avatar}`
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -126,7 +126,7 @@
                                 <img src="/images/home/home-03.png" style="width: 60px">
                             </div>
                             <div style="display: inline-block; padding-left: 40px; vertical-align: middle;">
-                                <div style="color: #455a64; font-size: 24px; padding-bottom: 5px">{{zhuanji}}</div>
+                                <div style="color: #455a64; font-size: 24px; padding-bottom: 5px">{{album}}</div>
                                 <div style="color: #99abb4;">专辑</div>
                             </div>
                         </el-card>
@@ -226,7 +226,7 @@
             songListNum: 0,
             songNum: 0,
             singerNum: 0,
-            zhuanji: 0,
+            album: 0,
             isCollapse: false
         },
         mounted() {
@@ -267,7 +267,7 @@
                     }
                 });
 
-                $.get("/zhuanji/statics").then(res => {
+                $.get("/album/statics").then(res => {
                     if (res.code === "0") {
                         albumPieOption.legend.data = Object.keys(res.data);
                         albumPieOption.series[0].data = [];
@@ -294,9 +294,9 @@
                         this.songNum = res.data.length;
                     }
                 });
-                $.get("/zhuanji").then(res => {
+                $.get("/album").then(res => {
                     if(res.code === '0') {
-                        this.zhuanji = res.data.length;
+                        this.album = res.data.length;
                     }
                 })
             },

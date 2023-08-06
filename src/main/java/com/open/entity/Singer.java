@@ -3,108 +3,109 @@ package com.open.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "t_singer")
+@Table(name = "singer")
 public class Singer {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "singer_id")
+    private Long singerId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "singer_name")
+    private String singerName;
 
-    @Column(name = "age")
-    private String age;
+    @Column(name = "singer_age")
+    private String singerAge;
 
-    @Column(name = "works")
-    private String works;
+    @Column(name = "singer_works")
+    private String singerWorks;
 
-    @Column(name = "come_from")
-    private String comeFrom;
+    @Column(name = "singer_come_from")
+    private String singerComeFrom;
 
-    @Column(name = "img")
-    private String img;
+    @Column(name = "singer_img")
+    private String singerImg;
 
-    @Column(name = "sex")
-    private String sex;
+    @Column(name = "singer_sex")
+    private String singerSex;
 
-    @Column(name = "introduction")
-    private String introduction;
+    @Column(name = "singer_introduction")
+    private String singerIntroduction;
 
-    @Column(name = "hot")
-    private Integer hot;
+    @Column(name = "singer_hot")
+    private Integer singerHot;
 
-    public Long getId() {
-        return id;
+    public Long getSingerId() {
+        return singerId;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setSingerId(Long singerId) {
+        this.singerId = singerId;
     }
 
-    public String getName() {
-        return name;
+    public String getSingerName() {
+        return singerName;
     }
 
-    public void setName(String name) {
-         this.name = name;
+    public void setSingerName(String singerName) {
+        this.singerName = singerName;
     }
 
-    public String getAge() {
-        return age;
+    public String getSingerAge() {
+        return singerAge;
     }
 
-    public void setAge(String age) {
-         this.age = age;
+    public void setSingerAge(String singerAge) {
+        this.singerAge = singerAge;
     }
 
-    public String getWorks() {
-        return works;
+    public String getSingerWorks() {
+        return singerWorks;
     }
 
-    public void setWorks(String works) {
-         this.works = works;
+    public void setSingerWorks(String singerWorks) {
+        this.singerWorks = singerWorks;
     }
 
-    public String getComeFrom() {
-        return comeFrom;
+    public String getSingerComeFrom() {
+        return singerComeFrom;
     }
 
-    public void setComeFrom(String comeFrom) {
-        this.comeFrom = comeFrom;
+    public void setSingerComeFrom(String singerComeFrom) {
+        this.singerComeFrom = singerComeFrom;
     }
 
-    public String getImg() {
-        return img;
+    public String getSingerImg() {
+        return singerImg;
     }
 
-    public void setImg(String img) {
-        this.img = img;
+    public void setSingerImg(String singerImg) {
+        this.singerImg = singerImg;
     }
 
-    public String getSex() {
-        return sex;
+    public String getSingerSex() {
+        return singerSex;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setSingerSex(String singerSex) {
+        this.singerSex = singerSex;
     }
 
-    public String getIntroduction() {
-        return introduction;
+    public String getSingerIntroduction() {
+        return singerIntroduction;
     }
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setSingerIntroduction(String singerIntroduction) {
+        this.singerIntroduction = singerIntroduction;
     }
 
-    public Integer getHot() {
-        return hot;
+    public Integer getSingerHot() {
+        return singerHot;
     }
 
-    public void setHot(Integer hot) {
-        this.hot = hot;
+    public void setSingerHot(Integer singerHot) {
+        this.singerHot = singerHot;
     }
 }

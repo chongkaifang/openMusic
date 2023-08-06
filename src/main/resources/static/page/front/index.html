@@ -44,7 +44,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -55,7 +55,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -63,7 +63,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -73,8 +73,8 @@
                     <div style="margin-right: 20px;">
                         <el-input v-model="search" prefix-icon="el-icon-search" row="8" placeholder="请输入内容"></el-input>
                         <el-button type="warning" size="small" @click="clickSearch()" style="margin-right: 20px">搜索</el-button>
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -121,11 +121,11 @@
             <el-row gutter="30" style="margin-top: 20px">
                 <el-col :span="12">
                     <div>
-                        <a :href=`/page/front/songlistDetail.html?id=${songList[0].id}` target="_blank">
-                            <img :src=`/files/${songList[0].img}` style="width: 100%; border-radius: 10px">
+                        <a :href=`/page/front/songlistDetail.html?id=${songList[0].songListId}` target="_blank">
+                            <img :src=`/files/${songList[0].songListImg}` style="width: 100%; border-radius: 10px">
                         </a>
                         <div style="margin-top: 10px">
-                            <span class="font-item">{{songList[0].name}}</span>
+                            <span class="font-item">{{songList[0].songListName}}</span>
                         </div>
                     </div>
                 </el-col>
@@ -133,21 +133,21 @@
                     <el-row gutter="25" justify="center" align="middle">
                         <el-col :span="12">
                             <div>
-                                <a :href=`/page/front/songlistDetail.html?id=${songList[1].id}` target="_blank">
-                                    <img :src=`/files/${songList[1].img}` style="width: 100%; border-radius: 10px">
+                                <a :href=`/page/front/songlistDetail.html?id=${songList[1].songListId}` target="_blank">
+                                    <img :src=`/files/${songList[1].songListImg}` style="width: 100%; border-radius: 10px">
                                 </a>
                                 <div style="margin: 10px">
-                                    <span class="font-item">{{songList[1].name}}</span>
+                                    <span class="font-item">{{songList[1].songListName}}</span>
                                 </div>
                             </div>
                         </el-col>
                         <el-col :span="12">
                             <div>
-                                <a :href=`/page/front/songlistDetail.html?id=${songList[2].id}` target="_blank">
-                                    <img :src=`/files/${songList[2].img}` style="width: 100%; border-radius: 10px">
+                                <a :href=`/page/front/songlistDetail.html?id=${songList[2].songListId}` target="_blank">
+                                    <img :src=`/files/${songList[2].songListImg}` style="width: 100%; border-radius: 10px">
                                 </a>
                                 <div style="margin: 10px 0">
-                                    <span class="font-item">{{songList[2].name}}</span>
+                                    <span class="font-item">{{songList[2].songListName}}</span>
                                 </div>
                             </div>
                         </el-col>
@@ -155,21 +155,21 @@
                     <el-row gutter="25">
                         <el-col :span="12">
                             <div>
-                                <a :href=`/page/front/songlistDetail.html?id=${songList[3].id}` target="_blank">
-                                    <img :src=`/files/${songList[3].img}` style="width: 100%; border-radius: 10px">
+                                <a :href=`/page/front/songlistDetail.html?id=${songList[3].songListId}` target="_blank">
+                                    <img :src=`/files/${songList[3].songListImg}` style="width: 100%; border-radius: 10px">
                                 </a>
                                 <div style="margin-top: 10px">
-                                    <span class="font-item">{{songList[3].name}}</span>
+                                    <span class="font-item">{{songList[3].songListName}}</span>
                                 </div>
                             </div>
                         </el-col>
                         <el-col :span="12">
                             <div>
-                                <a :href=`/page/front/songlistDetail.html?id=${songList[4].id}` target="_blank">
-                                    <img :src=`/files/${songList[4].img}` style="width: 100%; border-radius: 10px">
+                                <a :href=`/page/front/songlistDetail.html?id=${songList[4].songListId}` target="_blank">
+                                    <img :src=`/files/${songList[4].songListImg}` style="width: 100%; border-radius: 10px">
                                 </a>
                                 <div style="margin-top: 10px">
-                                    <span class="font-item">{{songList[4].name}}</span>
+                                    <span class="font-item">{{songList[4].songListName}}</span>
                                 </div>
                             </div>
                         </el-col>
@@ -183,19 +183,19 @@
                     <span class="main-font">热门专辑</span>
                 </el-col>
                 <el-col :span="12" style="text-align: right" >
-                    <a href="/page/front/zhuanji.html" class="more">更多 ></a>
+                    <a href="/page/front/album.html" class="more">更多 ></a>
                 </el-col>
             </el-row>
-            <el-row gutter="30" algin="middle" v-for="zhuanji in zhuanjis" style="margin-top: 20px">
+            <el-row gutter="30" algin="middle" v-for="album in albums" style="margin-top: 20px">
                 <el-col :span="9">
-                    <a :href=`/page/front/zhuanji.html?id=${zhuanji.id}` target="_blank">
-                        <img :src="'/files/' + zhuanji.img" style="width: 100%; border-radius: 10px; border-style: solid; border-width: 2px; border-color:#ccc">
+                    <a :href=`/page/front/album.html?id=${album.albumId}` target="_blank">
+                        <img :src="'/files/' + album.albumImg" style="width: 100%; border-radius: 10px; border-style: solid; border-width: 2px; border-color:#ccc">
                     </a>
                 </el-col>
                 <el-col :span="15">
-                    <div v-for="(item,index) in zhuanji.songList" style="margin-top: 5px">
-                        <a :href=`/page/front/songDetail.html?id=${item.id}` target="_blank" style="text-decoration: none; ">
-                            <span class="zhuanji-tem-font"><span>{{index + 1}}.</span> {{item.name}}</span>
+                    <div v-for="(item,index) in album.songList" style="margin-top: 5px">
+                        <a :href=`/page/front/songDetail.html?id=${item.songId}` target="_blank" style="text-decoration: none; ">
+                            <span class="album-tem-font"><span>{{index + 1}}.</span> {{item.songName}}</span>
                         </a>
                     </div>
                 </el-col>
@@ -216,11 +216,11 @@
             <el-row type="flex" :gutter="40" justify="center" style="margin-top: 30px">
                 <el-col :span="4" v-for="item in singers">
                     <div>
-                        <a :href=`/page/front/singer.html?id=${item.id}` target="_blank">
-                            <img :src="'/files/' + item.img" style="width: 100%; border-radius: 100px">
+                        <a :href=`/page/front/singer.html?id=${item.singerId}` target="_blank">
+                            <img :src="'/files/' + item.singerImg" style="width: 100%; border-radius: 100px">
                         </a>
                         <div style="margin-top: 15px; text-align: center">
-                            <span class="font-item">{{item.name}}</span>
+                            <span class="font-item">{{item.singerName}}</span>
                         </div>
                     </div>
                 </el-col>
@@ -235,9 +235,9 @@
                 <el-select v-model="entity.listId" placeholder="请选择">
                     <el-option
                             v-for="item in options"
-                            :key="item.id"
-                            :label="item.name"
-                            :value="item.id">
+                            :key="item.songListId"
+                            :label="item.songListName"
+                            :value="item.songListId">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -273,13 +273,13 @@
             options: [],
             songList: [],
             singers: [],
-            zhuanjis: [],
+            albums: [],
         },
         created() {
             this.getUser();
             this.loadHotSongList();
             this.loadHotSingerList();
-            this.loadHotZhuanjiList();
+            this.loadHotAlbumList();
         },
         mounted() {
             // 初始化播放器
@@ -302,7 +302,7 @@
                 })
             },
             collect(songId) {
-                if (!this.user || !this.user.username) {
+                if (!this.user || !this.user.userName) {
                     location.href = "../end/login.html";
                     return;
                 }
@@ -316,8 +316,8 @@
                     }
                 });
 
-                if (this.user && this.user.id) {
-                    $.get("/songList/user/" + this.user.id).then(res => {
+                if (this.user && this.user.userId) {
+                    $.get("/songList/user/" + this.user.userId).then(res => {
                         if(res.code === '0') {
                             this.options = res.data;
                         }
@@ -330,7 +330,7 @@
                         let list = [];
                         // 截取字符串
                         res.data.forEach(item => {
-                            item.name = subStr(item.name, 9);
+                            item.songListName = subStr(item.songListName, 9);
                             list.push(item);
                         });
                         this.songList = list;
@@ -354,13 +354,13 @@
                     }
                 });
             },
-            loadHotZhuanjiList() {
-                $.get("/zhuanji/hot").then(res => {
+            loadHotAlbumList() {
+                $.get("/album/hot").then(res => {
                     if (res.code === '0') {
-                        this.zhuanjis = res.data;
-                        this.zhuanjis.forEach(item => {
+                        this.albums = res.data;
+                        this.albums.forEach(item => {
                             item.songList.forEach(song => {
-                                song.name = subStr(song.composer + ' - ' + song.name, 13)
+                                song.songName = subStr(song.songComposer + ' - ' + song.songName, 13)
                             })
                         })
                     } else {

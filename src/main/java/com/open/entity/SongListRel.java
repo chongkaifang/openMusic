@@ -4,46 +4,47 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "t_song_list_rel")
+@Table(name = "song_list_rel")
 public class SongListRel {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "song_list_rel_id")
+    private Long songListRelId;
 
-    @Column(name = "song_id")
-    private Long songId;
+    @Column(name = "song_list_rel_song_id")
+    private Long songListRelSongId;
 
-    @Column(name = "list_id")
-    private Long listId;
+    @Column(name = "song_list_rel_list_id")
+    private Long songListRelListId;
 
     @Transient
     private List<Song> songList;
 
-    public Long getId() {
-        return id;
+    public Long getSongListRelId() {
+        return songListRelId;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setSongListRelId(Long songListRelId) {
+        this.songListRelId = songListRelId;
     }
 
-    public Long getSongId() {
-        return songId;
+    public Long getSongListRelSongId() {
+        return songListRelSongId;
     }
 
-    public void setSongId(Long songId) {
-         this.songId = songId;
+    public void setSongListRelSongId(Long songListRelSongId) {
+        this.songListRelSongId = songListRelSongId;
     }
 
-    public Long getListId() {
-        return listId;
+    public Long getSongListRelListId() {
+        return songListRelListId;
     }
 
-    public void setListId(Long listId) {
-         this.listId = listId;
+    public void setSongListRelListId(Long songListRelListId) {
+        this.songListRelListId = songListRelListId;
     }
 
     public List<Song> getSongList() {

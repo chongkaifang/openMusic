@@ -44,7 +44,7 @@ public class SingerController {
     @GetMapping("/updateHot/{id}")
     public Result<?> updateHot(@PathVariable Long id) {
         Singer singer = singerService.findById(id);
-        singer.setHot(singer.getHot() + 1);
+        singer.setSingerHot(singer.getSingerHot() + 1);
         singerService.save(singer);
         return Result.success();
     }

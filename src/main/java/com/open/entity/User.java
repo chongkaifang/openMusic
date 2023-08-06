@@ -3,100 +3,99 @@ package com.open.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "t_user")
+@Table(name = "user")
 public class User {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
 
     /**
      * 用户名
      */
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 密码
      */
-    @Column(name = "password")
-    private String password;
+    @Column(name = "user_password")
+    private String userPassword;
 
     /**
      * 邮箱
      */
-    @Column(name = "email")
-    private String email;
+    @Column(name = "user_email")
+    private String userEmail;
 
     /**
      * 电话
      */
-    @Column(name = "phone")
-    private String phone;
+    @Column(name = "user_phone")
+    private String userPhone;
 
-    private String avatar;
+    @Column(name = "user_avatar")
+    private String userAvatar;
 
-    @Column(name = "sex")
-    private String sex;
+    @Column(name = "user_sex")
+    private String userSex;
 
-
-    public String getAvatar() {
-        return avatar;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getId() {
-        return id;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserPassword() {
+        return userPassword;
     }
 
-    public void setUsername(String username) {
-         this.username = username;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setPassword(String password) {
-         this.password = password;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserPhone() {
+        return userPhone;
     }
 
-    public void setEmail(String email) {
-         this.email = email;
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getUserAvatar() {
+        return userAvatar;
     }
 
-    public void setPhone(String phone) {
-         this.phone = phone;
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
-    public String getSex() {
-        return sex;
+    public String getUserSex() {
+        return userSex;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
     }
-
-
 }

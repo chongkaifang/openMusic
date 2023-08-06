@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../../css/element.css">
     <link rel="stylesheet" href="../../css/audio.css">
     <link rel="stylesheet" href="../../css/base.css">
+    <link rel="stylesheet" href="../../css/APlayer.min.css">
     <style>
         [v-cloak] {
             display: none;
@@ -43,7 +44,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -54,7 +55,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -62,7 +63,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -70,8 +71,8 @@
             <el-col :span="6">
                 <div style="line-height: 60px; text-align: right">
                     <div style="margin-right: 20px">
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -94,16 +95,17 @@
             <div style="background-color: white;width: 100%; min-height: calc(100vh - 70px)">
                 <div style="padding: 10px">
                     <div style="margin-top: 20px">
-                        <div style="width: 30%; text-align: center; display: inline-block">
+                        <!--<div style="width: 30%; text-align: center; display: inline-block">
                             <img style="width: 200px" src="/images/播放器.png" alt="">
-                        </div>
-                        <div style="width: 65%; padding: 0 50px; display: inline-block; vertical-align: top ">
-                            <div style="font-size: 24px; padding-bottom: 20px">{{detail.name}}</div>
-                            <div style="padding: 10px 0">作词：{{detail.lyricist}}</div>
-                            <div style="padding: 10px 0">作曲：{{detail.composer}}</div>
-                            <div style="padding: 10px 0">歌手：{{detail.singer}}</div>
+                        </div>-->
+                        <div style="width: 100%; padding: 0 50px; display: inline-block; vertical-align: top ">
+                            <div style="font-size: 24px; padding-bottom: 20px">{{detail.songName}}</div>
+                            <div style="padding: 10px 0">作词：{{detail.songLyricist}}</div>
+                            <div style="padding: 10px 0">作曲：{{detail.songComposer}}</div>
+                            <div style="padding: 10px 0">歌手：{{detail.songSinger}}</div>
                             <div style="padding: 10px 0">
-                                <audio :src=`/files/${detail.url}` controls></audio>
+                                <!--<audio :src=`/files/${detail.songUrl}` controls></audio>-->
+                                <div id="aplayer"></div>
                             </div>
                         </div>
                     </div>
@@ -118,49 +120,49 @@
                         <div style="text-align: right; padding: 10px 0"><el-button size="small" type="primary" @click="comment">评论</el-button></div>
                     </div>
 
-                    <div style="padding: 10px; margin-top: 20px; border-bottom: 1px solid #ccc" v-for="item in comments" :key="item.id">
+                    <div style="padding: 10px; margin-top: 20px; border-bottom: 1px solid #ccc" v-for="item in comments" :key="item.commentId">
                         <el-row>
                             <el-col :span="3">
                                 <div>
                                     <img style="width: 50px; height: 50px; border-radius: 50%"
-                                         :src=`/files/${item.avatar}`>
+                                         :src=`/files/${item.userAvatar}`>
                                 </div>
                             </el-col>
                             <el-col :span="21">
-                                <div><span style="color: #888">{{item.username}}：</span>{{item.content}}</div>
+                                <div><span style="color: #888">{{item.userName}}：</span>{{item.commentContent}}</div>
                                 <div style="margin-top: 15px; ">
                                     <el-row>
                                         <el-col :span="4">
-                                            <div style="color: #888; font-size: 12px">{{ item.time }}</div>
+                                            <div style="color: #888; font-size: 12px">{{ item.commentTime }}</div>
                                         </el-col>
                                         <el-col :span="20">
                                             <div style="text-align: right; font-size: 12px">
-                                                <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(item)">({{item.praise}})
-                                                <a href="#" style="margin-left: 5px" @click="replay(item.id)">回复</a>
+                                                <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(item)">({{item.commentPraise}})
+                                                <a href="#" style="margin-left: 5px" @click="replay(item.commentId)">回复</a>
                                             </div>
                                         </el-col>
                                     </el-row>
                                 </div>
 
                                 <!-- 回复消息 -->
-                                <div style="margin-top: 20px" v-for="sub in item.subComment" :key="sub.id">
+                                <div style="margin-top: 20px" v-for="sub in item.subComment" :key="sub.commentId">
                                     <el-row>
                                         <el-col :span="2">
                                             <div>
                                                 <img style="width: 50px; height: 50px; border-radius: 50%"
-                                                     :src=`/files/${sub.avatar}`>
+                                                     :src=`/files/${sub.commentAvatar}`>
                                             </div>
                                         </el-col>
                                         <el-col :span="22">
-                                            <div><span style="color: #888">{{sub.username}} 回复：</span>{{sub.content}}</div>
+                                            <div><span style="color: #888">{{sub.userName}} 回复：</span>{{sub.commentContent}}</div>
                                             <div style="margin-top: 15px">
                                                 <el-row>
                                                     <el-col :span="4">
-                                                        <div style="color: #888; font-size: 12px">{{sub.time}}</div>
+                                                        <div style="color: #888; font-size: 12px">{{sub.commentTime}}</div>
                                                     </el-col>
                                                     <el-col :span="20">
                                                         <div style="text-align: right; font-size: 12px">
-                                                            <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(sub)">({{sub.praise}})
+                                                            <img style="width: 15px; cursor: pointer" src="/images/点赞.png" alt="" @click="praise(sub)">({{sub.commentPraise}})
                                                         </div>
                                                     </el-col>
                                                 </el-row>
@@ -181,7 +183,7 @@
                close-on-click-modal="false" close-on-press-escape="false" show-close="false">
         <el-form :model="entity">
             <el-form-item label="内容" label-width="100px">
-                <el-input v-model="entity.content" autocomplete="off" style="width: 80%"></el-input>
+                <el-input v-model="entity.commentContent" autocomplete="off" style="width: 80%"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -196,7 +198,19 @@
 <script src="../../js/vue.min.js"></script>
 <script src="../../js/element.js"></script>
 <script src="../../js/audio.js"></script>
+<script src="../../js/APlayer.min.js"></script>
 <script>
+    const ap = new APlayer({
+        container: document.getElementById('aplayer'),
+        lrcType: 3,
+        audio: {
+            name: 'name',
+            artist: 'artist',
+            url: 'demo.mp3',
+            cover: 'demo.jpg',
+            lrc: 'lrc.lrc'
+        }
+    });
     new Vue({
         el: "#wrapper",
         data: {
@@ -225,7 +239,7 @@
                 })
             },
             praise(item) {
-                item.praise = item.praise ? item.praise + 1 : 1;
+                item.commentPraise = item.commentPraise ? item.commentPraise + 1 : 1;
                 $.ajax({
                     url: '/comment',
                     contentType: "application/json",
@@ -280,12 +294,12 @@
             comment() {
                 let songId = location.search.split("=")[1];
                 this.entity = {
-                    pId: null,
-                    username: this.user.username,
-                    avatar:  this.user.avatar,
-                    praise: 0,
-                    songId: songId,
-                    content: this.content
+                    userPId: null,
+                    userName: this.user.userName,
+                    userAvatar:  this.user.userAvatar,
+                    commentPraise: 0,
+                    commentSongId: songId,
+                    commentContent: this.commentContent
                 };
                 this.save()
             },
@@ -293,10 +307,10 @@
                 let songId = location.search.split("=")[1];
                 this.entity = {
                     pId: id,
-                    username: this.user.username,
-                    avatar:  this.user.avatar,
-                    praise: 0,
-                    songId: songId
+                    userName: this.user.userName,
+                    userAvatar:  this.user.userAvatar,
+                    commentPraise: 0,
+                    commentSongId: songId
                 };
                 this.dialogFormVisible = true;
             },

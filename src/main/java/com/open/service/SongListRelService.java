@@ -23,15 +23,15 @@ public class SongListRelService {
     private SongListRelDao songListRelDao;
 
     public void save(SongListRel songListRel) {
-        Long listId = songListRel.getListId();
+        Long listId = songListRel.getSongListRelListId();
         List<Song> songList = songListRel.getSongList();
         for (Song song : songList) {
-            SongListRel rel = songListRelDao.findBySongIdAndListId(song.getId(), listId);
+            SongListRel rel = songListRelDao.findBySongListRelSongIdAndSongListRelListId(song.getSongId(), listId);
             // 已添加的歌曲不用重复添加
             if (rel == null) {
                 SongListRel info = new SongListRel();
-                info.setListId(listId);
-                info.setSongId(song.getId());
+                info.setSongListRelListId(listId);
+                info.setSongListRelSongId(song.getSongId());
                 songListRelDao.save(info);
             }
         }
@@ -39,10 +39,10 @@ public class SongListRelService {
 
     @Transactional(rollbackOn = Exception.class)
     public void delete(SongListRel songListRel) {
-        Long listId = songListRel.getListId();
+        Long listId = songListRel.getSongListRelListId();
         List<Song> songList = songListRel.getSongList();
         for (Song song : songList) {
-            songListRelDao.delBySongIdAndListId(song.getId(), listId);
+            songListRelDao.delBySongListRelSongIdAndSongListRelListId(song.getSongId(), listId);
         }
     }
 
@@ -59,10 +59,10 @@ public class SongListRelService {
     }
 
     public List<Song> findSongList(Long listId) {
-        List<SongListRel> rels = songListRelDao.findByListId(listId);
+        List<SongListRel> rels = songListRelDao.findBySongListRelListId(listId);
         List<Song> list = new ArrayList<>();
         for (SongListRel rel : rels) {
-            Long songId = rel.getSongId();
+            Long songId = rel.getSongListRelSongId();
             songDao.findById(songId).ifPresent(list::add);
         }
         return list;

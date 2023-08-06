@@ -10,10 +10,10 @@
 <body style="background:url('../../images/bg.jpg') no-repeat; background-size: cover;">
     <div id="wrapper">
         <div style="width: 500px; margin: 150px auto;">
-            <div style="width: 100%; height: 100px; color: #3031c2; font-size: 30px;line-height: 100px; text-align: center">欢迎登录时代音乐小站</div>
+            <div style="width: 100%; height: 100px; color: #3031c2; font-size: 30px;line-height: 100px; text-align: center">欢迎登录开放音乐平台</div>
             <div style="margin-top: 25px; width: 100%; height: 270px; text-align: center">
-                <input v-model="user.username" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%" placeholder="请输入账号">
-                <input v-model="user.password" type="password" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%; margin-top: 25px" placeholder="请输入密码">
+                <input v-model="user.userName" type="text" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%" placeholder="请输入账号">
+                <input v-model="user.userPassword" type="password" style="border: 1px solid #ccc; height: 40px; padding: 10px; width: 60%; margin-top: 25px" placeholder="请输入密码">
                 <button @click="login" style="height: 40px; padding: 10px; width: 60%; margin-top: 25px; background-color: steelblue; color: white">登陆</button>
                 <a style="width: 60%; text-align: right; display: inline-block; margin-top: 25px; color: steelblue" href="register.html">还没账号？去注册</a>
             </div>
@@ -32,14 +32,14 @@
             },
             methods: {
                 login() {
-                    if (!this.user.username) {
+                    if (!this.user.userName) {
                         this.$message({
                             message: "请输入用户名",
                             type: "error"
                         })
                         return;
                     }
-                    if (!this.user.password) {
+                    if (!this.user.userPassword) {
                         this.$message({
                             message: "请输入密码",
                             type: "error"

@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface SongListDao extends JpaRepository<SongList, Long>, JpaSpecificationExecutor<SongList> {
 
-    List<SongList> findByUserId(Long userId);
-    @Query(value = "select * from t_song_list order by play_num desc limit 5", nativeQuery = true)
+    List<SongList> findBySongListUserId(Long songListUserId);
+    @Query(value = "select * from song_list order by song_list_play_num desc limit 5", nativeQuery = true)
     List<SongList> findHotSongList();
 }

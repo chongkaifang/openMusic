@@ -3,128 +3,129 @@ package com.open.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "t_song")
+@Table(name = "song")
 public class Song {
     /**
      * 主键
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "song_id")
+    private Long songId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "song_name")
+    private String songName;
 
     /**
      * 作曲人
      */
-    @Column(name = "composer")
-    private String composer;
+    @Column(name = "song_composer")
+    private String songComposer;
 
     /**
      * 作词人
      */
-    @Column(name = "lyricist")
-    private String lyricist;
+    @Column(name = "song_lyricist")
+    private String songLyricist;
 
     /**
      * 演唱
      */
-    @Column(name = "singer")
-    private String singer;
+    @Column(name = "song_singer")
+    private String songSinger;
 
     /**
      * 歌曲链接
      */
-    @Column(name = "url")
-    private String url;
+    @Column(name = "song_url")
+    private String songUrl;
 
     /**
      * 专辑
      */
-    @Column(name = "album")
-    private String album;
+    @Column(name = "song_album")
+    private String songAlbum;
 
-    @Column(name = "time")
-    private String time;
-    @Column(name = "hot")
-    private Integer hot;
+    @Column(name = "song_time")
+    private String songTime;
+    @Column(name = "song_hot")
+    private Integer songHot;
 
     @Transient
     private Long singerId;
     @Transient
     private Long albumId;
 
-    public Long getId() {
-        return id;
+    public Long getSongId() {
+        return songId;
     }
 
-    public void setId(Long id) {
-         this.id = id;
+    public void setSongId(Long songId) {
+        this.songId = songId;
     }
 
-    public String getName() {
-        return name;
+    public String getSongName() {
+        return songName;
     }
 
-    public void setName(String name) {
-         this.name = name;
+    public void setSongName(String songName) {
+        this.songName = songName;
     }
 
-    public String getComposer() {
-        return composer;
+    public String getSongComposer() {
+        return songComposer;
     }
 
-    public void setComposer(String composer) {
-         this.composer = composer;
+    public void setSongComposer(String songComposer) {
+        this.songComposer = songComposer;
     }
 
-    public String getLyricist() {
-        return lyricist;
+    public String getSongLyricist() {
+        return songLyricist;
     }
 
-    public void setLyricist(String lyricist) {
-         this.lyricist = lyricist;
+    public void setSongLyricist(String songLyricist) {
+        this.songLyricist = songLyricist;
     }
 
-    public String getSinger() {
-        return singer;
+    public String getSongSinger() {
+        return songSinger;
     }
 
-    public void setSinger(String singer) {
-         this.singer = singer;
+    public void setSongSinger(String songSinger) {
+        this.songSinger = songSinger;
     }
 
-    public String getUrl() {
-        return url;
+    public String getSongUrl() {
+        return songUrl;
     }
 
-    public void setUrl(String url) {
-         this.url = url;
+    public void setSongUrl(String songUrl) {
+        this.songUrl = songUrl;
     }
 
-    public String getAlbum() {
-        return album;
+    public String getSongAlbum() {
+        return songAlbum;
     }
 
-    public void setAlbum(String album) {
-         this.album = album;
+    public void setSongAlbum(String songAlbum) {
+        this.songAlbum = songAlbum;
     }
 
-    public String getTime() {
-        return time;
+    public String getSongTime() {
+        return songTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setSongTime(String songTime) {
+        this.songTime = songTime;
     }
 
-    public Integer getHot() {
-        return hot;
+    public Integer getSongHot() {
+        return songHot;
     }
 
-    public void setHot(Integer hot) {
-        this.hot = hot;
+    public void setSongHot(Integer songHot) {
+        this.songHot = songHot;
     }
 
     public Long getSingerId() {

@@ -54,7 +54,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">时代音乐小站</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">开放音乐平台</a>
                     </div>
                 </div>
             </el-col>
@@ -65,7 +65,7 @@
                         <a style="color: white" href="/page/front/index.html">首页</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item nav-active">
-                        <a style="color: white" href="/page/front/zhuanji.html">热门专辑</a>
+                        <a style="color: white" href="/page/front/album.html">热门专辑</a>
                     </div>
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/song.html">热门歌曲</a>
@@ -73,7 +73,7 @@
                     <div style="padding: 0 20px; cursor: pointer; width: 100px; text-align: center" class="nav-item">
                         <a style="color: white" href="/page/front/songlist.html">歌单列表</a>
                     </div>
-                    <div v-if="user && user.id" style="padding: 0 20px; cursor: pointer" class="nav-item">
+                    <div v-if="user && user.userId" style="padding: 0 20px; cursor: pointer" class="nav-item">
                         <a style="color: white" href="/page/end/index.html">个人中心</a>
                     </div>
                 </div>
@@ -81,8 +81,8 @@
             <el-col :span="6">
                 <div style="line-height: 60px; text-align: right">
                     <div style="margin-right: 20px">
-                        <el-dropdown v-if="user && user.id">
-                            <img :src=`/files/${user.avatar}`
+                        <el-dropdown v-if="user && user.userId">
+                            <img :src=`/files/${user.userAvatar}`
                                  style="width: 40px; height: 40px; margin-right: 10px; border-radius: 50%">
                             <el-dropdown-menu slot="dropdown">
                                 <a href="/page/end/person.html"
@@ -107,13 +107,13 @@
                     text-color="#555"
                     active-text-color="#169af3">
                 <el-menu-item
-                        :index="item.id"
-                        :key="item.id"
-                        v-for="(item,index) in zhuanjis"
-                        @click="loadSongData(item.id)"
+                        :index="item.albumId"
+                        :key="item.albumId"
+                        v-for="(item,index) in albums"
+                        @click="loadSongData(item.albumId)"
                 >
-                    <img :src=`/files/${item.img}` style="width: 18px; height: 18px">
-                    <span style="margin-left: 10px; font-size: 14px;">{{item.name}}</span>
+                    <img :src=`/files/${item.albumImg}` style="width: 18px; height: 18px">
+                    <span style="margin-left: 10px; font-size: 14px;">{{item.albumName}}</span>
                 </el-menu-item>
             </el-menu>
         </el-col>
@@ -146,24 +146,24 @@
                         align="center"
                 >
                     <template slot-scope="scope">
-                        <a :href=`/page/front/songDetail.html?id=${scope.row.id}`>{{scope.row.name}}</a>
+                        <a :href=`/page/front/songDetail.html?id=${scope.row.songId}`>{{scope.row.songName}}</a>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="singer"
+                        prop="songSinger"
                         label="作曲人"
                         align="center"
                 >
                 </el-table-column>
                 <el-table-column
-                        prop="lyricist"
+                        prop="songLyricist"
                         label="作词人"
                         align="center"
                 >
                 </el-table-column>
                 </el-table-column>
                 <el-table-column
-                        prop="hot"
+                        prop="songHot"
                         label="热度🔥"
                         align="center"
                 >
@@ -176,7 +176,7 @@
         <el-form :model="form">
             <el-form-item label="歌单选择" label-width="120px">
                 <el-select v-model="form.listId" placeholder="请选择你的歌单">
-                    <el-option v-for="item in list" :label="item.name" :value="item.id"></el-option>
+                    <el-option v-for="item in list" :label="item.songListName" :value="item.songListId"></el-option>
                 </el-select>
             </el-form-item>
         </el-form>
@@ -205,7 +205,7 @@
             // 专辑内的歌曲
             songData: [],
             // 专辑列表
-            zhuanjis: [],
+            albums: [],
             // 选中待加入歌单的歌曲
             multipleSelection: []
         },
@@ -220,7 +220,7 @@
                     if (res.code === '0') {
                         this.user = res.data;
                         // 加载当前用户歌单信息
-                        $.get("/songList/user/" + this.user.id).then(res => {
+                        $.get("/songList/user/" + this.user.userId).then(res => {
                             if (res.code === '0') {
                                 this.list = res.data;
                             } else {
@@ -239,10 +239,10 @@
                 })
             },
             loadZhuanjiData() {
-                $.get("/zhuanji").then(res => {
+                $.get("/album").then(res => {
                     if (res.code === '0') {
-                        this.zhuanjis = res.data;
-                        this.index = this.index === 0 ? this.zhuanjis[0].id : this.index;
+                        this.albums = res.data;
+                        this.index = this.index === 0 ? this.albums[0].albumId : this.index;
                         // 加载右侧歌曲信息
                         this.loadSongData(this.index);
                     } else {
@@ -253,8 +253,8 @@
                     }
                 })
             },
-            loadSongData(id) {
-                $.get("/song/album/" + id).then(res => {
+            loadSongData(albumId) {
+                $.get("/song/album/" + albumId).then(res => {
                     if (res.code === '0') {
                         this.songData = res.data;
                     } else {
@@ -264,7 +264,7 @@
                         });
                     }
                 });
-                $.get("/zhuanji/updateHot/" + id);
+                $.get("/album/updateHot/" + albumId);
             },
             // 记录选中的待加入歌单的单曲
             handleSelectionChange(val) {

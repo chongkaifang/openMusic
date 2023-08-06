@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface CommentDao extends JpaRepository<Comment, Long>, JpaSpecificationExecutor<Comment> {
 
-    List<Comment> findBySongId(Long songId);
+    List<Comment> findByCommentSongId(Long commentSongId);
 }
