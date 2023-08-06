@@ -8,6 +8,7 @@ import com.open.common.Result;
 import com.open.entity.User;
 import com.open.exception.CustomException;
 import com.open.service.UserService;
+import com.open.tools.NeteaseUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,8 @@ public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private NeteaseUtils neteaseUtils;
 
     @GetMapping("/session")
     public Result<User> getUser(HttpServletRequest request) {
@@ -134,5 +137,11 @@ public class UserController {
         writer.flush(out, true);
         writer.close();
         IoUtil.close(System.out);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        neteaseUtils.getPersonalizedSongList();
+        return "";
     }
 }
