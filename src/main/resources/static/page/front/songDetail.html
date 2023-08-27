@@ -44,7 +44,7 @@
                 <!-- 导航 -->
                 <div style="height: 60px; line-height: 60px; color: white; text-align: center;">
                     <div style="padding: 0 20px; cursor: pointer">
-                        <a style="color: white; font-size: 23px" href="/page/front/index.html">音乐畅游广场</a>
+                        <a style="color: white; font-size: 23px" href="/page/front/index.html">音乐网站系统</a>
                     </div>
                 </div>
             </el-col>
@@ -128,11 +128,11 @@
                             <el-col :span="3">
                                 <div>
                                     <img style="width: 50px; height: 50px; border-radius: 50%"
-                                         :src=`/files/${item.userAvatar}`>
+                                         :src=`/files/${item.commentAvatar}`>
                                 </div>
                             </el-col>
                             <el-col :span="21">
-                                <div><span style="color: #888">{{item.userName}}：</span>{{item.commentContent}}</div>
+                                <div><span style="color: #888">{{item.commentUsername}}：</span>{{item.commentContent}}</div>
                                 <div style="margin-top: 15px; ">
                                     <el-row>
                                         <el-col :span="4">
@@ -157,7 +157,7 @@
                                             </div>
                                         </el-col>
                                         <el-col :span="22">
-                                            <div><span style="color: #888">{{sub.userName}} 回复：</span>{{sub.commentContent}}</div>
+                                            <div><span style="color: #888">{{sub.commentUsername}} 回复：</span>{{sub.commentContent}}</div>
                                             <div style="margin-top: 15px">
                                                 <el-row>
                                                     <el-col :span="4">
