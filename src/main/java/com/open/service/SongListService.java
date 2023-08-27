@@ -1,17 +1,18 @@
 package com.open.service;
 
 import cn.hutool.core.util.StrUtil;
+import com.open.dao.SongListDao;
+import com.open.entity.SongList;
 import com.open.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import java.util.List;
-import com.open.dao.SongListDao;
-import com.open.entity.SongList;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class SongListService {
@@ -28,10 +29,13 @@ public class SongListService {
     }
 
     public SongList findById(Long id) {
-        return songListDao.findById(id).orElse(null);    }
+        return songListDao.findBySongListId(id);
+        //return songListDao.findById(id).orElse(null);
+    }
 
     public List<SongList> findAll() {
-        return songListDao.findAll();
+        return songListDao.findAllSongList();
+        //return songListDao.findAll();
     }
 
     public Page<SongList> findPage(HttpServletRequest request, int pageNum, int pageSize, String name) {

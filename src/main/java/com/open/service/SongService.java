@@ -4,8 +4,10 @@ import cn.hutool.core.util.StrUtil;
 import com.open.dao.SingerDao;
 import com.open.dao.SongDao;
 import com.open.dao.AlbumDao;
+import com.open.dao.SongNetDao;
 import com.open.entity.Song;
 import com.open.entity.Album;
+import com.open.entity.SongNet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,6 +25,8 @@ public class SongService {
     @Resource
     private SongDao songDao;
     @Resource
+    private SongNetDao songNetDao;
+    @Resource
     private AlbumDao albumDao;
     @Resource
     private SingerDao singerDao;
@@ -31,12 +35,24 @@ public class SongService {
         return songDao.save(song);
     }
 
+    public SongNet saveSongNet(SongNet song) {
+        return songNetDao.save(song);
+    }
+
     public void delete(Long id) {
         songDao.deleteById(id);
     }
 
     public Song findById(Long id) {
         return songDao.findById(id).orElse(null);
+    }
+
+    public Song findBySongId(Long id) {
+        return songDao.findBySongId(id);
+    }
+
+    public SongNet findBySongNetId(Long id) {
+        return songNetDao.findById(id).orElse(null);
     }
 
     public List<Song> findAll() {

@@ -63,7 +63,11 @@ public class SongListRelService {
         List<Song> list = new ArrayList<>();
         for (SongListRel rel : rels) {
             Long songId = rel.getSongListRelSongId();
-            songDao.findById(songId).ifPresent(list::add);
+            Song song = songDao.findBySongId(songId);
+            if(null != song){
+                list.add(song);
+            }
+            //songDao.findById(songId).ifPresent(list::add);
         }
         return list;
     }

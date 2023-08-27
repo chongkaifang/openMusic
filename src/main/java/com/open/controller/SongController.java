@@ -3,6 +3,7 @@ package com.open.controller;
 import com.open.common.Result;
 import com.open.entity.Singer;
 import com.open.entity.Song;
+import com.open.entity.SongNet;
 import com.open.service.SingerService;
 import com.open.service.SongService;
 import com.open.tools.FileWriteUtils;
@@ -41,7 +42,17 @@ public class SongController {
 
     @PutMapping
     public Result<?> update(@RequestBody Song song) {
-        return Result.success(songService.save(song));
+        Song savedSong = songService.save(song);
+        String lyric = song.getSongLyric();
+        if (!StringUtils.isEmpty(lyric)) {
+            String path = System.getProperty("user.dir");
+            try {
+                FileWriteUtils.createFile(path + "\\src\\main\\resources\\static\\file", "r" + savedSong.getSongId().toString() + ".lrc", lyric);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Result.success(savedSong);
     }
 
     @DeleteMapping("/{id}")
@@ -52,15 +63,23 @@ public class SongController {
 
     @GetMapping("/{id}")
     public Result<Song> findById(@PathVariable Long id) {
-        Song s = songService.findById(id);
-        return Result.success(songService.findById(id));
+        Song s = songService.findBySongId(id);
+        return Result.success(s);
     }
 
     @GetMapping("/updateHot/{id}")
     public Result<?> updateHot(@PathVariable Long id) {
         Song song = songService.findById(id);
-        song.setSongHot(song.getSongHot() + 1);
-        songService.save(song);
+        if(null != song){
+            song.setSongHot(song.getSongHot() + 1);
+            songService.save(song);
+        }else{
+            SongNet songNet = songService.findBySongNetId(id);
+            if(null != songNet){
+                songNet.setSongHot(songNet.getSongHot() + 1);
+                songService.saveSongNet(songNet);
+            }
+        }
         return Result.success();
     }
 

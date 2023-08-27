@@ -10,14 +10,12 @@ import com.open.entity.*;
 import com.open.service.NetCookieService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -65,6 +63,7 @@ public class NeteaseUtils {
         }
     }
 
+    @Transactional
     public void getPersonalizedSongList() throws IOException {
         List<SingerNet> singerNetList = new ArrayList<>();
         List<SongNet> songNetList = new ArrayList<>();
@@ -214,7 +213,7 @@ public class NeteaseUtils {
             List<SingerNet> singerNetListNew = new ArrayList<>();
             singerNetList.stream().filter(distinctByKey(SingerNet::getSingerId)) //filter保留true的值
                     .forEach(singerNetListNew::add);
-            singerNetdao.deleteInBatch(singerNetListNew);
+            //singerNetdao.deleteInBatch(singerNetListNew);
             singerNetdao.saveAll(singerNetListNew);
         }
         if (CollectionUtils.isNotEmpty(songNetList)) {
@@ -232,13 +231,21 @@ public class NeteaseUtils {
                     String path = System.getProperty("user.dir");
                     HttpClientUtil.downloadNet(url, path + "\\src\\main\\resources\\static\\file", songNet.getSongId().toString() + ".mp3");
                 }
+                songNet.setSongUrl(songNet.getSongId().toString());
+                songNet.setSongHot(0);
+                songNet.setSongCreateTime(new Date());
             }
-            songNetDao.deleteInBatch(songNetListNew);
+            //songNetDao.deleteInBatch(songNetListNew);
             songNetDao.saveAll(songNetListNew);
         }
         if (CollectionUtils.isNotEmpty(songListNetList)) {
-            songListNetList.forEach(e -> e.setSongListImg("1691314070397"));
-            songListNetDao.deleteInBatch(songListNetList);
+            for (SongListNet songListNet : songListNetList) {
+                songListNet.setSongListImg("1691314070397");
+                songListNet.setSongListUsername("netease");
+                songListNet.setSongListCreateTime(new Date());
+                songListRelNetDao.delBySongListRelListId(songListNet.getSongListId());
+            }
+            //songListNetDao.deleteInBatch(songListNetList);
             songListNetDao.saveAll(songListNetList);
         }
         if (CollectionUtils.isNotEmpty(songListRelNetList)) {

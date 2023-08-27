@@ -100,8 +100,8 @@
                         </div>
                         <div style="width: 65%; padding: 0 50px; display: inline-block; vertical-align: top ">
                             <div style="font-size: 24px; padding-bottom: 20px">{{detail.songName}}</div>
-                            <div style="padding: 10px 0">作词：{{detail.songLyricist}}</div>
-                            <div style="padding: 10px 0">作曲：{{detail.songComposer}}</div>
+                            <div v-if="detail.songLyricist != null && detail.songLyricist != ''" style="padding: 10px 0">作词：{{detail.songLyricist}}</div>
+                            <div v-if="detail.songComposer != null && detail.songComposer != ''" style="padding: 10px 0">作曲：{{detail.songComposer}}</div>
                             <div style="padding: 10px 0">歌手：{{detail.songSinger}}</div>
                             <div style="padding: 10px 0">
                                 <!--<audio :src=`/files/${detail.songUrl}` controls></audio>-->
@@ -267,7 +267,7 @@
                                 artist: this.detail.songSinger,
                                 url: '/files/audio/'+this.detail.songUrl,
                                 cover: '/images/播放器.png',
-                                lrc: '/files/r'+this.detail.songUrl+'.lrc'
+                                lrc: '/files/r'+this.detail.songId+'.lrc'
                             },
                             preload: 'auto',
                             fixed: true

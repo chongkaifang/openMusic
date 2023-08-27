@@ -16,4 +16,9 @@ public interface SongDao extends JpaRepository<Song, Long>, JpaSpecificationExec
 
     @Query(value = "select * from song where song_album = ?1 order by song_hot desc", nativeQuery = true)
     List<Song> findAllBySongAlbum(String songAlbum);
+
+    @Query(value = "select song_id,song_name,song_composer,song_lyricist,song_singer,song_url,song_lyric,song_album,song_time,song_hot from song where song_id = ?1 " +
+            "union all " +
+            "select song_id,song_name,song_composer,song_lyricist,song_singer,song_url,song_lyric,song_album,song_time,song_hot from song_net where song_id = ?1 order by song_hot desc ", nativeQuery = true)
+    Song findBySongId(Long songId);
 }

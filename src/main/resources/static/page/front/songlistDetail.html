@@ -111,7 +111,7 @@
                     <div class="v-hd2" style="display: inline-block">
                         本歌单列表
                     </div>
-                    <div v-if="user && detail.userId === user.userId" style="display: inline-block; float: right">
+                    <div v-if="user && detail.songListUserId === user.userId" style="display: inline-block; float: right">
                         <el-button
                                 round
                                 size="small"
@@ -128,7 +128,7 @@
                             style="width: 100%"
                             @selection-change="handleSelectionChange"
                     >
-                        <el-table-column v-if="user && detail.userId === user.userId"
+                        <el-table-column v-if="user && detail.songListUserId === user.userId"
                                 type="selection"
                                 align="center"
                                 width="50">
@@ -289,7 +289,7 @@
                                         artist: item.songSinger,
                                         url: '/files/audio/'+item.songUrl,
                                         cover: '/images/播放器.png',
-                                        lrc: '/files/r'+item.songUrl+'.lrc'
+                                        lrc: '/files/r'+item.songId+'.lrc'
                                     });
                                 }
 
@@ -336,7 +336,7 @@
                     type: 'warning'
                 }).then(function(){
                     let form = {};
-                    form.listId = _this.detail.songListRelId;
+                    form.songListRelListId = location.search.split("=")[1];
                     form.songList = _this.multipleSelection;
                     $.ajax({
                         url: '/songListRel',

@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface SongListRelDao extends JpaRepository<SongListRel, Long>, JpaSpecificationExecutor<SongListRel> {
 
+    @Query(value = "select song_list_rel_id,song_list_rel_song_id,song_list_rel_list_id from song_list_rel where song_list_rel_list_id = ?1 " +
+            "union all " +
+            "select song_list_rel_id,song_list_rel_song_id,song_list_rel_list_id from song_list_rel_net where song_list_rel_list_id = ?1 ", nativeQuery = true)
     List<SongListRel> findBySongListRelListId(Long songListRelListId);
 
     SongListRel findBySongListRelSongIdAndSongListRelListId(Long songListRelSongId, Long songListRelListId);

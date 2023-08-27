@@ -186,7 +186,7 @@
     <el-dialog title="选择你要加入的歌单" :visible.sync="dialogFormVisible" width="30%">
         <el-form :model="form">
             <el-form-item label="歌单选择" label-width="120px">
-                <el-select v-model="form.listId" placeholder="请选择你的歌单">
+                <el-select v-model="form.songListRelListId" placeholder="请选择你的歌单">
                     <el-option v-for="item in list" :label="item.songListName" :value="item.songListId"></el-option>
                 </el-select>
             </el-form-item>
