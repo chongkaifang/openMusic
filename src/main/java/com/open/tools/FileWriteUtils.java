@@ -21,7 +21,7 @@ public class FileWriteUtils {
             }
             // 三、向目标文件中写入内容
             // FileWriter(File file, boolean append)，append为true时为追加模式，false或缺省则为覆盖模式
-            writer = new FileWriter(checkFile, true);
+            writer = new FileWriter(checkFile, false);
             writer.append(content);
             writer.flush();
         } catch (IOException e) {
