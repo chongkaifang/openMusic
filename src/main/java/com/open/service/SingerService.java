@@ -18,6 +18,9 @@ public class SingerService {
     private SingerDao singerDao;
 
     public Singer save(Singer singer) {
+        if(singer.getSingerId() == null){
+            singer.setSingerHot(0);
+        }
         return singerDao.save(singer);
     }
 

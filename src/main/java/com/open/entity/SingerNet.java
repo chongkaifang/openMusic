@@ -11,7 +11,6 @@ public class SingerNet {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "singer_id")
     private Long singerId;
 

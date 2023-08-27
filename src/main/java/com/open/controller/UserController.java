@@ -141,7 +141,11 @@ public class UserController {
 
     @GetMapping("/test")
     public String test() {
-        neteaseUtils.getPersonalizedSongList();
+        try {
+            neteaseUtils.getPersonalizedSongList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "";
     }
 }

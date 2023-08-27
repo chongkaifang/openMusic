@@ -12,7 +12,6 @@ public class SongListNet {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "song_list_id")
     private Long songListId;
 

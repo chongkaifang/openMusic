@@ -5,10 +5,13 @@ import com.open.entity.Singer;
 import com.open.entity.Song;
 import com.open.service.SingerService;
 import com.open.service.SongService;
+import com.open.tools.FileWriteUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +26,17 @@ public class SongController {
     @PostMapping
     public Result<Song> save(@RequestBody Song song) {
         song.setSongHot(0);
-        return Result.success(songService.save(song));
+        Song savedSong = songService.save(song);
+        String lyric = song.getSongLyric();
+        if (!StringUtils.isEmpty(lyric)) {
+            String path = System.getProperty("user.dir");
+            try {
+                FileWriteUtils.createFile(path + "\\src\\main\\resources\\static\\file", "r" + savedSong.getSongId().toString() + ".lrc", lyric);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Result.success(savedSong);
     }
 
     @PutMapping

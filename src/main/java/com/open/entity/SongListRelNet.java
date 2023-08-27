@@ -4,14 +4,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "song_list_rel")
+@Table(name = "song_list_rel_net")
 public class SongListRelNet {
     /**
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "song_list_rel_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long songListRelId;
 
     @Column(name = "song_list_rel_song_id")
@@ -21,7 +21,7 @@ public class SongListRelNet {
     private Long songListRelListId;
 
     @Transient
-    private List<Song> songList;
+    private List<SongNet> songList;
 
     public Long getSongListRelId() {
         return songListRelId;
@@ -47,11 +47,11 @@ public class SongListRelNet {
         this.songListRelListId = songListRelListId;
     }
 
-    public List<Song> getSongList() {
+    public List<SongNet> getSongList() {
         return songList;
     }
 
-    public void setSongList(List<Song> songList) {
+    public void setSongList(List<SongNet> songList) {
         this.songList = songList;
     }
 }

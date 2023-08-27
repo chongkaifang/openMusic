@@ -6,7 +6,13 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -86,17 +92,22 @@ public class HttpClientUtil {
      * @return
      */
     public static String doGet(String url, String charset, Map<String, String> myHeaders, Map<String, String> myParams) {
+        try {
+            Thread.sleep(10L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //1.生成HttpClient对象并设置参数
         HttpClient httpClient = new HttpClient();
         //设置Http连接超时为5秒
         httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
         //2.生成GetMethod对象并设置参数
         GetMethod getMethod = new GetMethod(url);
-        for(String key : myHeaders.keySet()){
+        for (String key : myHeaders.keySet()) {
             getMethod.setRequestHeader(key, myHeaders.get(key));
         }
-        for(String key : myParams.keySet()){
-            getMethod.setQueryString(key+"=" +  URLEncoder.encode(myParams.get(key)));
+        for (String key : myParams.keySet()) {
+            getMethod.setQueryString(key + "=" + URLEncoder.encode(myParams.get(key)));
         }
         //设置get请求超时为5秒
         getMethod.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, 5000);
@@ -170,11 +181,37 @@ public class HttpClientUtil {
         return res;
     }
 
-    public static void main(String[] args) {
-        System.out.println(doGet("http://localhost:3000/register/anonimous", "GBK"));
+    /**
+     * 下载网络文件
+     *
+     * @param fileUrl
+     * @param filePath
+     * @param fileName
+     * @throws MalformedURLException
+     */
+    public static void downloadNet(String fileUrl, String filePath, String fileName) throws MalformedURLException {
+        int byteread = 0;
+        URL url = new URL(fileUrl);
+        try {
+            URLConnection conn = url.openConnection();
+            InputStream inStream = conn.getInputStream();
+            FileOutputStream fs = new FileOutputStream(filePath + "\\" + fileName);
+            byte[] buffer = new byte[1204];
+            while ((byteread = inStream.read(buffer)) != -1) {
+                fs.write(buffer, 0, byteread);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("commentId", "13026194071");
-//        System.out.println(doPost("http://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=13026194071", jsonObject));
+    public static void main(String[] args) {
+        //System.out.println(doGet("http://localhost:3000/register/anonimous", "GBK"));
+        try {
+            String path = System.getProperty("user.dir");
+            downloadNet("http://m702.music.126.net/20230827153726/c7c0c0875967298f14db9ec3edb56e62/jd-musicrep-ts/ee81/3cdc/5c9c/94f20fadd45a65de025b14b79b2e85ea.mp3", path + "\\src\\main\\resources\\static\\file", "test.mp3");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 }

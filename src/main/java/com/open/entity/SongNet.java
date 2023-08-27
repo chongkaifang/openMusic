@@ -10,7 +10,6 @@ public class SongNet {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "song_id")
     private Long songId;
 
