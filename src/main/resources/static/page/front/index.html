@@ -360,7 +360,7 @@
                         this.albums = res.data;
                         this.albums.forEach(item => {
                             item.songList.forEach(song => {
-                                song.songName = subStr(song.songComposer + ' - ' + song.songName, 13)
+                                song.songName = subStr(song.songSinger + ' - ' + song.songName, 13)
                             })
                         })
                     } else {
