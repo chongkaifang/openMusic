@@ -299,21 +299,21 @@
             comment() {
                 let songId = location.search.split("=")[1];
                 this.entity = {
-                    userPId: null,
-                    userName: this.user.userName,
-                    userAvatar:  this.user.userAvatar,
+                    commentPId: null,
+                    commentUsername: this.user.userName,
+                    commentAvatar:  this.user.userAvatar,
                     commentPraise: 0,
                     commentSongId: songId,
-                    commentContent: this.commentContent
+                    commentContent: this.content
                 };
                 this.save()
             },
             replay(id) {
                 let songId = location.search.split("=")[1];
                 this.entity = {
-                    pId: id,
-                    userName: this.user.userName,
-                    userAvatar:  this.user.userAvatar,
+                    commentPId: id,
+                    commentUsername: this.user.userName,
+                    commentAvatar:  this.user.userAvatar,
                     commentPraise: 0,
                     commentSongId: songId
                 };

@@ -58,6 +58,7 @@ public class UserService {
     }
 
     public User add(User user) {
+        user.setUserSex("男");
         return userDao.save(user);
     }
 
